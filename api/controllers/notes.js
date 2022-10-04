@@ -22,16 +22,17 @@ const NotesController = {
       const token = await TokenGenerator.jsonwebtoken(req.user_id)
       res.status(201).json({ message: 'OK', token: token });
     });
+},
+  Delete: (req, res) => {
+    Note.deleteOne({_id: req.body._id}, (err) => {
+      if (err) {
+        throw err; // Not sure how to test this?
+      } else {
+        res.status(201).json({ message: 'OK' });
+      }
+    })
   }
-};
-//   Delete: (req, res) => {
-//     Post.deleteOne({_id: req.body._id}, (err) => {
-//       if (err) {
-//         throw err; // Not sure how to test this?
-//       } else {
-//         res.status(201).json({ message: 'OK' });
-//       }
-//     }) },
+}
 
 //   Update: async (req, res) => {
 //     Post.findOneAndUpdate(
