@@ -8,11 +8,11 @@ const NoteSchema = new mongoose.Schema({
     type: Date,
     default: () => Date.now(),
   },
-  Noteauthor: {
+  noteAuthor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: User,
   },
-  Tags:[{
+  tags:[{
     type: mongoose.Schema.Types.ObjectId,
     ref: Tag,
   }]
