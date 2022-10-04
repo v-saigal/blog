@@ -11,19 +11,19 @@ const NotesController = {
       const token = await TokenGenerator.jsonwebtoken(req.user_id)
       res.status(200).json({ notes: notes, token: token });
     });
+  },
+  Create: (req, res) => {
+    const note = new Note(req.body);
+    note.save(async (err) => {
+      if (err) {
+        throw err; // Not sure how to test this?
+      }
+
+      const token = await TokenGenerator.jsonwebtoken(req.user_id)
+      res.status(201).json({ message: 'OK', token: token });
+    });
   }
 };
-//   Create: (req, res) => {
-//     const post = new Post(req.body);
-//     post.save(async (err) => {
-//       if (err) {
-//         throw err; // Not sure how to test this?
-//       }
-
-//       const token = await TokenGenerator.jsonwebtoken(req.user_id)
-//       res.status(201).json({ message: 'OK', token: token });
-//     });
-//   },
 //   Delete: (req, res) => {
 //     Post.deleteOne({_id: req.body._id}, (err) => {
 //       if (err) {
