@@ -5,6 +5,7 @@ const logger = require("morgan");
 const JWT = require("jsonwebtoken");
 
 const postsRouter = require("./routes/posts");
+const notesRouter = require("./routes/notes");
 const tokensRouter = require("./routes/tokens");
 const usersRouter = require("./routes/users");
 
@@ -40,6 +41,7 @@ const tokenChecker = (req, res, next) => {
 
 // route setup
 app.use("/posts", tokenChecker, postsRouter);
+app.use("/notes", tokenChecker, notesRouter);
 app.use("/tokens", tokensRouter);
 app.use("/users", usersRouter);
 

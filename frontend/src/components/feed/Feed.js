@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Post from '../post/Post'
+import Note from '../note/Note'
 import './Feed.css'
 import jwt_decode from "jwt-decode";
 
 
 const Feed = ({ navigate }) => {
   const [posts, setPosts] = useState([]);
+  const [notes, setNotes] = useState([]);
   const [token, setToken] = useState(window.localStorage.getItem("token"));
   const [post, setPost] = useState()
   const [counter, setCounter] = useState(0)
@@ -14,7 +16,7 @@ const Feed = ({ navigate }) => {
 
   useEffect(() => {
     if(token) {
-      fetch("/posts", {
+      fetch("/notes", {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -24,11 +26,11 @@ const Feed = ({ navigate }) => {
         .then(async data => {
           window.localStorage.setItem("token", data.token)
           setToken(window.localStorage.getItem("token"))
-          setPosts(data.posts);
+          setNotes(data.notes);
         })
         
     }
-  }, [counter])
+  }, [])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -94,8 +96,8 @@ const Feed = ({ navigate }) => {
           </div>
           <div id='feed' role="feed">
           <button onClick= {topFunction} id="myBtn" title="Go to top">Top</button>
-              {posts.map(
-                (post) => ( <Post post={ post } key={ post._id } token={ token } userId={userId} counterChanger={ setCounter }/> )
+              {notes.map(
+                (note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} counterChanger={ setCounter }/> )
               )}
           </div>
         </>
