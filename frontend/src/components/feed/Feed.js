@@ -6,10 +6,11 @@ import jwt_decode from "jwt-decode";
 
 
 const Feed = ({ navigate }) => {
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [notes, setNotes] = useState([]);
   const [token, setToken] = useState(window.localStorage.getItem("token"));
-  const [post, setPost] = useState()
+  // const [post, setPost] = useState()
+  const [note, setNote] = useState()
   const [counter, setCounter] = useState(0)
   let userId;
   if (token === "fakeToken") {userId = 'TestUser'} else {userId = jwt_decode(token).user_id} // Means that tests won't use jwt_decode and therefore won't through errors
@@ -30,23 +31,23 @@ const Feed = ({ navigate }) => {
         })
         
     }
-  }, [])
+  }, [counter])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    fetch( '/posts', {
+    fetch( '/notes', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ message: post, postauthor: userId })
+      body: JSON.stringify({ noteContent: note, noteAuthor: userId })
     })
       .then(response => {
         if(response.status === 201) {
           setCounter(counter + 1)
-          setPost("")
-          navigate('/posts')
+          setNote("")
+          navigate('/notes')
         } else {
           alert('oops something is wrong')
         }
@@ -59,8 +60,8 @@ const Feed = ({ navigate }) => {
     navigate('/login')
   }
 
-  const handlePostChange = (event) => {
-    setPost(event.target.value)
+  const handleNoteChange = (event) => {
+    setNote(event.target.value)
   }
   
   //button back to top
@@ -89,9 +90,9 @@ const Feed = ({ navigate }) => {
         <>
           <div>
                 <form className="postForm" onSubmit={handleSubmit}>
-                  <textarea id="postarea" name="postarea" value={ post } onChange={handlePostChange} placeholder="Write your post here"></textarea>
+                  <textarea id="postarea" name="postarea" value={ note } onChange={handleNoteChange} placeholder="Write your note here"></textarea>
 
-                  <input id='submit' type="submit" value="Add a post" />
+                  <input id='submit' type="submit" value="Add a note" />
                 </form>
           </div>
           <div id='feed' role="feed">
