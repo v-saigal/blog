@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './Note.css'
-
+import { Link, NavLink } from 'react-router-dom';
 
 
 const Note = (props) => {
@@ -37,7 +37,13 @@ const Note = (props) => {
       }
 
       const deleteBtnAppears = (() => {if (props.note.noteAuthor===props.userId) {return <button onClick= {deleteFunction} className={"like"} id={"deleteBtn"} title={"Delete note"}>Delete note</button>}})
-
+      const editLinkAppears = (() => {
+        if (props.note.noteAuthor===props.userId){
+          return <NavLink to={`/notes/edit/${props.note._id}`}>
+            Edit
+          </NavLink>
+        }
+      })
 return(
       <article data-cy="note" className='note' key={ props.note._id }>
 
@@ -54,6 +60,7 @@ return(
        </div>
 
        {deleteBtnAppears()}
+       {editLinkAppears()}
 
       </article>
 )
