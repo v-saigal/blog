@@ -12,13 +12,24 @@ const NotesController = {
       res.status(200).json({ notes: notes, token: token });
     });
   },
-  FindById: async (req, res) => {
-    const note = await Note.findById(req.params.id);
-    const token = await TokenGenerator.jsonwebtoken(req.user_id);
-    res.status(200).json({ note: note, token: token });
 
-
+  FindById: (req, res) => {
+    Note.findById(req.params.id).find(async (err, note) => {
+      if(err) {
+        throw err;
+      }
+      const token = await TokenGenerator.jsonwebtoken(req.user_id)
+      res.status(200).json({ note: note[0], token: token });
+    });
   },
+
+  // FindById: async (req, res) => {
+  //   const note = await Note.findById(req.params.id));
+  //   const token = await TokenGenerator.jsonwebtoken(req.user_id);
+  //   res.status(200).json({ note: note, token: token });
+
+
+  // },
   Create: (req, res) => {
     const note = new Note(req.body);
     note.save(async (err) => {
@@ -38,16 +49,19 @@ const NotesController = {
         res.status(201).json({ message: 'OK' });
       }
     })
+  },
+  Update: async (req, res) => {
+    console.log("hello from HELL +++++++++++++++")
+    Note.findByIdAndUpdate(
+      { _id: req.body._id },
+      { noteContent: req.body.noteContent},
+      {useFindAndModify: false}
+    ).exec()
+    res.status(200).json({ message: 'like added'})
   }
-}
+};
 
-//   Update: async (req, res) => {
-//     Post.findOneAndUpdate(
-//       { _id: req.body._id },
-//       { $push: { likes: req.body.userId } }
-//     ).exec()
-//     res.status(200).json({ message: 'like added'})
-//   },
+
 
 //   RemoveLike: async (req, res) => {
 //     Post.findOneAndUpdate(
