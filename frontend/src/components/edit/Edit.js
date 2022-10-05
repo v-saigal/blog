@@ -2,10 +2,10 @@ import jwt_decode from "jwt-decode";
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-function Edit(){
+function Edit({navigate}){
     console.log("Edit reached!")
     const [token, setToken] = useState(window.localStorage.getItem("token"));
-    const [note, setNote] = useState()
+    const [note, setNote] = useState([])
     const [counter, setCounter] = useState(0)
     const params = useParams();
 
@@ -29,8 +29,51 @@ function Edit(){
 
         }
       }, [counter])
+
       console.log(note);
 
+      const handleSubmit = async (event) => {
+        event.preventDefault();
+        fetch( '/notes/update', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({_id: params.id, noteContent: note, noteAuthor: userId })
+        })
+          .then(response => {
+            if(response.status === 200) {
+              setCounter(counter + 1)
+              setNote("")
+              navigate('/notes')
+            } else {
+              alert('oops something is wrong')
+            }
+          })
+      }
+
+      const handleNoteChange = (event) => {
+        setNote(event.target.value)   
+      }
+
+
+      return (
+        <>
+        <div>
+          <p>
+          {note.noteContent}
+          </p>
+        </div>
+            <div>
+            <form className="postForm" onSubmit={handleSubmit}>
+              <textarea id="postarea" name="postarea" value={ note.noteContent } onChange={handleNoteChange} placeholder="Write your note here"></textarea>
+
+              <input id='submit' type="submit" value="Save a note" />
+            </form>
+      </div>
+      </>
+      )
 }
 
 
