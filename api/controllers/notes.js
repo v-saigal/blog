@@ -12,6 +12,13 @@ const NotesController = {
       res.status(200).json({ notes: notes, token: token });
     });
   },
+  FindById: async (req, res) => {
+    const note = await Note.findById(req.params.id);
+    const token = await TokenGenerator.jsonwebtoken(req.user_id);
+    res.status(200).json({ note: note, token: token });
+
+
+  },
   Create: (req, res) => {
     const note = new Note(req.body);
     note.save(async (err) => {
