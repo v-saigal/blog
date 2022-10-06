@@ -1,6 +1,7 @@
 const { response } = require("express");
 const TokenGenerator = require("../models/token_generator");
 const Note = require("../models/note")
+const TagsController = require("./tags")
 
 const NotesController = {
   Index: (req, res) => {
@@ -32,12 +33,12 @@ const NotesController = {
   // },
   Create: async (req, res) => {
     const note = new Note(req.body);
+    console.log(note)
     note.save(async (err) => {
       if (err) {
         throw err; // Not sure how to test this?
       }
-    console.log("++++++++++++++++++")
-    console.log(req.body)
+
       const token = await TokenGenerator.jsonwebtoken(req.user_id)
       res.status(201).json({ message: 'OK', token: token });
     });

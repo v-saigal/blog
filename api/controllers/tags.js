@@ -7,16 +7,17 @@ const TagsController = {
 
   Create: async (req, res) => {
     const tag = new Tag(req.body);
-    tag.save(async (err) => {
-      if (err) {
-        throw err; // Not sure how to test this?
-      }
-      return db.Tag.create(tag).then(docTag => {
+    // tag.save(async (err) => {
+    //   if (err) {
+    //     throw err; // Not sure how to test this?
+    //   }
+      Tag.create(tag).then(docTag => {
       console.log("\n>> Created Tag:\n", docTag);
-      return docTag;
-    })
+      res.status(201).json({ message: 'OK', tag: docTag });
+      ;
+    // })
     });
-}, 
+},
   Delete: (req, res) => {
     Note.deleteOne({_id: req.body._id}, (err) => {
       if (err) {
@@ -34,7 +35,7 @@ const TagsController = {
       })
   },
 
-  
+
 };
 
 module.exports = TagsController;

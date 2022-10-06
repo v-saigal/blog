@@ -25,22 +25,39 @@ const Feed = ({ navigate }) => {
           'Authorization': `Bearer ${token}`
         }
       })
-        .then(response => 
+        .then(response =>
           response.json())
         .then(async data => {
           window.localStorage.setItem("token", data.token)
           setToken(window.localStorage.getItem("token"))
           setNotes(data.notes);
         })
-        
+
     }
   }, [counter])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     noteValues.tags = noteValues.tags.split(",")
-    console.log(noteValues.tags)
-    fetch( '/notes', {
+
+    let createdTags = []
+    noteValues.tags.forEach( async (tag) => {
+      const tagResponse = await fetch('/tags', {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify( {name:tag} )
+      })
+      const data = await tagResponse.json()
+
+      createdTags.push("String(data.tag._id)")
+
+
+    })
+    noteValues.tags = createdTags;
+    console.log(JSON.stringify(noteValues))
+    await fetch( '/notes', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -58,34 +75,33 @@ const Feed = ({ navigate }) => {
         }
       })
   }
-    
+
 
   const logout = () => {
     window.localStorage.removeItem("token")
     navigate('/login')
   }
 
-  
+
   // const handleNoteChange = (event) => {
   //   setNote(event.target.value)
   // }
 
   function handleNoteChange(event){
-    console.log("------------------------")
-    console.log(noteValues)
+
     const {name, value} = event.target;
     setNoteValues({
        ...noteValues,
         [name]: value
     });
   };
-  
+
   //button back to top
   let mybutton = document.getElementById("myBtn");
 
   // When the user scrolls down 20px from the top of the document, show the button
   window.onscroll = function() {scrollFunction()};
-  
+
   function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
       mybutton.style.display = "block";
@@ -93,7 +109,7 @@ const Feed = ({ navigate }) => {
       mybutton.style.display = "none";
     }
   }
-  
+
   // When the user clicks on the button, scroll to the top of the document
   function topFunction() {
     document.body.scrollTop = 0; // For Safari
