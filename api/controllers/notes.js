@@ -30,13 +30,14 @@ const NotesController = {
 
 
   // },
-  Create: (req, res) => {
+  Create: async (req, res) => {
     const note = new Note(req.body);
     note.save(async (err) => {
       if (err) {
         throw err; // Not sure how to test this?
       }
-
+    console.log("++++++++++++++++++")
+    console.log(req.body)
       const token = await TokenGenerator.jsonwebtoken(req.user_id)
       res.status(201).json({ message: 'OK', token: token });
     });
