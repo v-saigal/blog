@@ -38,6 +38,8 @@ const Feed = ({ navigate }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    noteValues.tags = noteValues.tags.split(",")
+    console.log(noteValues.tags)
     fetch( '/notes', {
       method: 'post',
       headers: {
