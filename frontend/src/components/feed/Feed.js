@@ -6,14 +6,17 @@ import jwt_decode from "jwt-decode";
 
 
 const Feed = ({ navigate }) => {
+  const [token, setToken] = useState(window.localStorage.getItem("token"));
+  let userId;
+  if (token === "fakeToken") {userId = 'TestUser'} else {userId = jwt_decode(token).user_id} // Means that tests won't use jwt_decode and therefore won't through errors
+  const [noteValues, setNoteValues] = useState({title:"", noteContent:"", noteAuthor:userId, tags:[]});
   // const [posts, setPosts] = useState([]);
   const [notes, setNotes] = useState([]);
-  const [token, setToken] = useState(window.localStorage.getItem("token"));
+
   // const [post, setPost] = useState()
   const [note, setNote] = useState()
   const [counter, setCounter] = useState(0)
-  let userId;
-  if (token === "fakeToken") {userId = 'TestUser'} else {userId = jwt_decode(token).user_id} // Means that tests won't use jwt_decode and therefore won't through errors
+
 
   useEffect(() => {
     if(token) {
@@ -41,12 +44,12 @@ const Feed = ({ navigate }) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ noteContent: note, noteAuthor: userId })
+      body: JSON.stringify( noteValues )
     })
       .then(response => {
         if(response.status === 201) {
           setCounter(counter + 1)
-          setNote("")
+          setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[]})
           navigate('/notes')
         } else {
           alert('oops something is wrong')
@@ -60,9 +63,20 @@ const Feed = ({ navigate }) => {
     navigate('/login')
   }
 
-  const handleNoteChange = (event) => {
-    setNote(event.target.value)
-  }
+  
+  // const handleNoteChange = (event) => {
+  //   setNote(event.target.value)
+  // }
+
+  function handleNoteChange(event){
+    console.log("------------------------")
+    console.log(noteValues)
+    const {name, value} = event.target;
+    setNoteValues({
+       ...noteValues,
+        [name]: value
+    });
+  };
   
   //button back to top
   let mybutton = document.getElementById("myBtn");
@@ -90,8 +104,9 @@ const Feed = ({ navigate }) => {
         <>
           <div>
                 <form className="postForm" onSubmit={handleSubmit}>
-                  <textarea id="postarea" name="postarea" value={ note } onChange={handleNoteChange} placeholder="Write your note here"></textarea>
-
+                  <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+                  <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags" />
+                  <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
                   <input id='submit' type="submit" value="Add a note" />
                 </form>
           </div>
