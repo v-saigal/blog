@@ -3,6 +3,7 @@ const User = require("./user");
 const Tag = require("./tag");
 
 const NoteSchema = new mongoose.Schema({
+  title: String,
   noteContent: String,
   datePosted: {
     type: Date,
@@ -12,10 +13,11 @@ const NoteSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: User,
   },
-  tags:[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: Tag,
-  }]
+  tags: [String]
+  //   {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: Tag,
+  // }
 });
 // Update the route? That works with Notema
 // Create some tests to check this works for the model file and controller
