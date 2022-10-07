@@ -3,6 +3,7 @@ import './Note.css'
 import { Link, NavLink } from 'react-router-dom';
 
 
+
 const Note = (props) => {
 
   //const [comment, setComment] = useState();
@@ -56,6 +57,18 @@ return(
       </div>
 
         <div className="container-4">
+          <h3>TITLE</h3>
+          <p className='message con-4-1'>{ props.note.title }</p>
+       </div>
+
+        <div className="container-4">
+          <h3>TAGS</h3>
+          {/* <p className='message con-4-1'>{ props.note.tags }</p> */}
+          <p className='message con-4-1'>{ props.note.tags.join(', ') }</p>
+       </div>
+
+        <div className="container-4">
+          <h3>CONTENT</h3>
           <p className='message con-4-1'>{ props.note.noteContent }</p>
        </div>
        <ul>
