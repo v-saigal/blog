@@ -43,7 +43,9 @@ const Feed = ({ navigate }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    noteValues.tags = noteValues.tags.split(",")
+    const regEx = /[a-zA-Z0-9]+,/
+    if(regEx.test(noteValues.tags.trim().replace(/\s/g,''))) {
+    noteValues.tags = noteValues.tags.split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
      fetch('/tags', {
       method: 'post',
       headers: {
@@ -74,19 +76,13 @@ const Feed = ({ navigate }) => {
             }
           })
         navigate('/notes')
-
-
-
       })
 
     })
-
-
-
-
-
-
-
+  } else if(!regEx.test(noteValues.tags)) {
+    alert('The given tag formatting is wrong. Only letters and numbers accepted. Use commas to separate the tags. Example: tag1, tag2, tag3')
+    return;
+  }
   }
 
 
@@ -131,7 +127,7 @@ const Feed = ({ navigate }) => {
           <div>
             <form className="postForm" onSubmit={handleSubmit}>
               <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-              <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags" />
+              <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
               <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
               <input id='submit' type="submit" value="Add a note" />
             </form>

@@ -64,21 +64,19 @@ return(
         <div className="container-4">
           <h3>TAGS</h3>
           {/* <p className='message con-4-1'>{ props.note.tags }</p> */}
-          <p className='message con-4-1'>{ props.note.tags.join(', ') }</p>
+          <p className='message con-4-1'>
+            { props.note.tags.map(
+              (tag) => (tag.name)).join(',')}</p>
        </div>
 
         <div className="container-4">
           <h3>CONTENT</h3>
           <p className='message con-4-1'>{ props.note.noteContent }</p>
        </div>
-       <ul>
-       {props.note.tags.map(
-                (tag) => ( <li>{tag.name}</li>)
-              )}
 
        {deleteBtnAppears()}
        {editLinkAppears()}
-        </ul>
+        
       </article>
 )
 }
