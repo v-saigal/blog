@@ -6,17 +6,24 @@ const Tag = require("../models/tag")
 const TagsController = {
 
   Create: async (req, res) => {
-    const tag = new Tag(req.body);
-    tag.save(async (err) => {
-      if (err) {
-        throw err; // Not sure how to test this?
-      }
-      return db.Tag.create(tag).then(docTag => {
-      console.log("\n>> Created Tag:\n", docTag);
-      return docTag;
-    })
+    // const tag = new Tag(req.body);
+    // tag.save(async (err) => {
+    //   if (err) {
+    //     throw err; // Not sure how to test this?
+    //   }
+      const tagNames = req.body;
+      const tagObjects = []
+      tagNames.forEach((tagName) => {
+        tagObjects.push({name: tagName})
+      })
+
+      Tag.create (tagObjects).then(docTag => {
+      // console.log("\n>> Created Tag:\n", docTag);
+      res.status(201).json({ message: 'OK', tag: docTag });
+      ;
+    // })
     });
-}, 
+},
   Delete: (req, res) => {
     Note.deleteOne({_id: req.body._id}, (err) => {
       if (err) {
@@ -34,7 +41,7 @@ const TagsController = {
       })
   },
 
-  
+
 };
 
 module.exports = TagsController;

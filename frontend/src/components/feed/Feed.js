@@ -17,7 +17,7 @@ const Feed = ({ navigate }) => {
   const [note, setNote] = useState()
   const [counter, setCounter] = useState(0)
 
-  // search 
+  // search
   const [query, setQuery] = useState("")
 
 
@@ -28,40 +28,67 @@ const Feed = ({ navigate }) => {
           'Authorization': `Bearer ${token}`
         }
       })
-        .then(response => 
+        .then(response =>
           response.json())
         .then(async data => {
           window.localStorage.setItem("token", data.token)
           setToken(window.localStorage.getItem("token"))
           setNotes(data.notes);
         })
-        
+
     }
   }, [counter])
+
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     noteValues.tags = noteValues.tags.split(",")
-    console.log(noteValues.tags)
-    fetch( '/notes', {
+     fetch('/tags', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify( noteValues )
-    })
-      .then(response => {
-        if(response.status === 201) {
-          setCounter(counter + 1)
-          setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[]})
-          navigate('/notes')
-        } else {
-          alert('oops something is wrong')
-        }
+      body: JSON.stringify( noteValues.tags )
+    }).then((response) => {
+      response.json().then((data) => {
+        noteValues.tags = []
+        data.tag.forEach((tag) => {
+          noteValues.tags.push(tag._id)
+        })
+        fetch( '/notes', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(noteValues)
+        })
+          .then(response => {
+            if(response.status === 201) {
+              setCounter(counter + 1)
+              setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[]})
+              navigate('/notes')
+            } else {
+              alert('oops something is wrong')
+            }
+          })
+        navigate('/notes')
+
+
+
       })
+
+    })
+
+
+
+
+
+
+
   }
-    
+
 
   const logout = () => {
     window.localStorage.removeItem("token")
@@ -69,21 +96,20 @@ const Feed = ({ navigate }) => {
   }
 
   function handleNoteChange(event){
-    console.log("------------------------")
-    console.log(noteValues)
+
     const {name, value} = event.target;
     setNoteValues({
        ...noteValues,
         [name]: value
     });
   };
-  
+
   //button back to top
   let mybutton = document.getElementById("myBtn");
 
   // When the user scrolls down 20px from the top of the document, show the button
   window.onscroll = function() {scrollFunction()};
-  
+
   function scrollFunction() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
       mybutton.style.display = "block";
@@ -91,7 +117,7 @@ const Feed = ({ navigate }) => {
       mybutton.style.display = "none";
     }
   }
-  
+
   // When the user clicks on the button, scroll to the top of the document
   function topFunction() {
     document.body.scrollTop = 0; // For Safari
@@ -120,8 +146,8 @@ const Feed = ({ navigate }) => {
           {console.log(notes)}
           {notes
             .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
-            
-            .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> )) 
+
+            .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
           }
 
           {/* back to top button */}
