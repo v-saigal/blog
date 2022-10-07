@@ -5,7 +5,8 @@ import { useParams } from 'react-router-dom';
 function Edit({navigate}){
     console.log("Edit reached!")
     const [token, setToken] = useState(window.localStorage.getItem("token"));
-    const [note, setNote] = useState([])
+    // const [note, setNote] = useState([])
+    const [noteValues, setNoteValues] = useState({title:"", noteContent:"", noteAuthor:userId, tags:[]});
     const [counter, setCounter] = useState(0)
     const params = useParams();
 
@@ -24,13 +25,13 @@ function Edit({navigate}){
             .then(async data => {
               window.localStorage.setItem("token", data.token)
               setToken(window.localStorage.getItem("token"))
-              setNote(data.note);
+              setNoteValues(data.note);
             })
 
         }
       }, [counter])
 
-      console.log(note);
+      console.log(noteValues);
 
       const handleSubmit = async (event) => {
         event.preventDefault();
@@ -40,12 +41,12 @@ function Edit({navigate}){
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({_id: params.id, noteContent: note, noteAuthor: userId })
+          body: JSON.stringify({_id: params.id, noteContent: noteValues.noteContent, title: noteValues.title, noteAuthor: userId })
         })
           .then(response => {
             if(response.status === 200) {
               setCounter(counter + 1)
-              setNote("")
+              setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[]})
               navigate('/notes')
             } else {
               alert('oops something is wrong')
@@ -53,21 +54,27 @@ function Edit({navigate}){
           })
       }
 
-      const handleNoteChange = (event) => {
-        setNote(event.target.value)   
-      }
+      // Initial 
+      // const handleNoteChange = (event) => {
+      //   setNote(event.target.value)   
+      // }
 
+      // Updated
+      function handleNoteChange(event){
+
+        const {name, value} = event.target;
+        setNoteValues({
+           ...noteValues,
+            [name]: value
+        });
+      };
 
       return (
         <>
-        <div>
-          <p>
-          {note.noteContent}
-          </p>
-        </div>
             <div>
             <form className="postForm" onSubmit={handleSubmit}>
-              <textarea id="postarea" name="postarea" value={ note.noteContent } onChange={handleNoteChange} placeholder="Write your note here"></textarea>
+              <input type="text" name="title" value={noteValues.title} onChange={handleNoteChange}/>
+              <textarea id="postarea" name="noteContent" value={ noteValues.noteContent } onChange={handleNoteChange} placeholder="Write your note here"></textarea>
 
               <input id='submit' type="submit" value="Save a note" />
             </form>
