@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Post from '../post/Post'
+// import Post from '../post/Post'
 import Note from '../note/Note'
 import './Feed.css'
 import jwt_decode from "jwt-decode";
@@ -16,6 +16,9 @@ const Feed = ({ navigate }) => {
   // const [post, setPost] = useState()
   const [note, setNote] = useState()
   const [counter, setCounter] = useState(0)
+
+  // search 
+  const [query, setQuery] = useState("")
 
 
   useEffect(() => {
@@ -65,11 +68,6 @@ const Feed = ({ navigate }) => {
     navigate('/login')
   }
 
-  
-  // const handleNoteChange = (event) => {
-  //   setNote(event.target.value)
-  // }
-
   function handleNoteChange(event){
     console.log("------------------------")
     console.log(noteValues)
@@ -105,19 +103,29 @@ const Feed = ({ navigate }) => {
       return(
         <>
           <div>
-                <form className="postForm" onSubmit={handleSubmit}>
-                  <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-                  <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags" />
-                  <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
-                  <input id='submit' type="submit" value="Add a note" />
-                </form>
+            <form className="postForm" onSubmit={handleSubmit}>
+              <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+              <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags" />
+              <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
+              <input id='submit' type="submit" value="Add a note" />
+            </form>
           </div>
-          <div id='feed' role="feed">
+
+
+
+          {/* search function */}
+          <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
+
+          {/* notes output */}
+          {console.log(notes)}
+          {notes
+            .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
+            
+            .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> )) 
+          }
+
+          {/* back to top button */}
           <button onClick= {topFunction} id="myBtn" title="Go to top">Top</button>
-              {notes.map(
-                (note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} counterChanger={ setCounter }/> )
-              )}
-          </div>
         </>
       )
     } else {
