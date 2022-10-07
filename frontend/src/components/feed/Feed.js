@@ -17,6 +17,30 @@ const Feed = ({ navigate }) => {
   const [note, setNote] = useState()
   const [counter, setCounter] = useState(0)
 
+  function stringify(value) {
+    const lastKey = Object.keys(value).pop();
+    let objString = '';
+    if (typeof value === 'object') {
+        // We add the first curly brace
+        objString += '{';
+        for (const key in value) {
+            objString += `"${key}":${stringify(value[key])}`;
+
+            // We add the comma
+            if (key !== lastKey) {
+                objString += ',';
+            }
+        }
+        // We add the last curly brace
+        objString += '}';
+    } else if (typeof value === 'string') {
+        objString += `"${value}"`;
+    } else if (typeof value === 'number') {
+        objString += `${value}`;
+    }
+    return objString;
+}
+
 
   useEffect(() => {
     if(token) {
@@ -36,44 +60,54 @@ const Feed = ({ navigate }) => {
     }
   }, [counter])
 
+
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     noteValues.tags = noteValues.tags.split(",")
-
-    let createdTags = []
-    noteValues.tags.forEach( async (tag) => {
-      const tagResponse = await fetch('/tags', {
-        method: 'post',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify( {name:tag} )
-      })
-      const data = await tagResponse.json()
-
-      createdTags.push("String(data.tag._id)")
-
-
-    })
-    noteValues.tags = createdTags;
-    console.log(JSON.stringify(noteValues))
-    await fetch( '/notes', {
+     fetch('/tags', {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify( noteValues )
-    })
-      .then(response => {
-        if(response.status === 201) {
-          setCounter(counter + 1)
-          setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[]})
-          navigate('/notes')
-        } else {
-          alert('oops something is wrong')
-        }
+      body: JSON.stringify( noteValues.tags )
+    }).then((response) => {
+      response.json().then((data) => {
+        noteValues.tags = []
+        data.tag.forEach((tag) => {
+          noteValues.tags.push(tag._id)
+        })
+        fetch( '/notes', {
+          method: 'post',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(noteValues)
+        })
+          .then(response => {
+            if(response.status === 201) {
+              setCounter(counter + 1)
+              setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[]})
+              navigate('/notes')
+            } else {
+              alert('oops something is wrong')
+            }
+          })
+        navigate('/notes')
+
+
+
       })
+
+    })
+
+
+
+
+
+
+
   }
 
 

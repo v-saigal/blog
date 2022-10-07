@@ -58,10 +58,14 @@ return(
         <div className="container-4">
           <p className='message con-4-1'>{ props.note.noteContent }</p>
        </div>
+       <ul>
+       {props.note.tags.map(
+                (tag) => ( <li>{tag.name}</li>)
+              )}
 
        {deleteBtnAppears()}
        {editLinkAppears()}
-
+        </ul>
       </article>
 )
 }

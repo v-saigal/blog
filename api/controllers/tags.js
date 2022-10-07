@@ -6,13 +6,19 @@ const Tag = require("../models/tag")
 const TagsController = {
 
   Create: async (req, res) => {
-    const tag = new Tag(req.body);
+    // const tag = new Tag(req.body);
     // tag.save(async (err) => {
     //   if (err) {
     //     throw err; // Not sure how to test this?
     //   }
-      Tag.create(tag).then(docTag => {
-      console.log("\n>> Created Tag:\n", docTag);
+      const tagNames = req.body;
+      const tagObjects = []
+      tagNames.forEach((tagName) => {
+        tagObjects.push({name: tagName})
+      })
+
+      Tag.create (tagObjects).then(docTag => {
+      // console.log("\n>> Created Tag:\n", docTag);
       res.status(201).json({ message: 'OK', tag: docTag });
       ;
     // })

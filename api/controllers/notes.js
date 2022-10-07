@@ -5,7 +5,7 @@ const TagsController = require("./tags")
 
 const NotesController = {
   Index: (req, res) => {
-    Note.find().sort( {datePosted: -1} ).find(async (err, notes) => {
+    Note.find().populate('tags').sort( {datePosted: -1} ).find(async (err, notes) => {
       if (err) {
         throw err; //Not sure how to test this?
       }
@@ -32,16 +32,17 @@ const NotesController = {
 
   // },
   Create: async (req, res) => {
-    const note = new Note(req.body);
-    console.log(note)
-    note.save(async (err) => {
-      if (err) {
-        throw err; // Not sure how to test this?
-      }
-
+    console.log(req.body)
+    // const note = new Note(req.body);
+    // console.log(note)
+    Note.create(req.body).then(async note => {
       const token = await TokenGenerator.jsonwebtoken(req.user_id)
       res.status(201).json({ message: 'OK', token: token });
-    });
+
+    })
+
+
+
 },
   Delete: (req, res) => {
     Note.deleteOne({_id: req.body._id}, (err) => {
