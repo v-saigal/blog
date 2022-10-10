@@ -43,7 +43,6 @@ function Edit({navigate}){
         }
       }, [counter])
 
-
       /*
     noteValues.tags = noteValues.tags.split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
      fetch('/tags', {
@@ -59,7 +58,7 @@ function Edit({navigate}){
           noteValues.tags.push(tag._id)
         }
       */
-
+      
       console.log(noteValues);
 
       const handleSubmit = async (event) => {
