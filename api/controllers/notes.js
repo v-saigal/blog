@@ -15,7 +15,7 @@ const NotesController = {
   },
 
   FindById: (req, res) => {
-    Note.findById(req.params.id).find(async (err, note) => {
+    Note.findById(req.params.id).populate('tags').find(async (err, note) => {
       if(err) {
         throw err;
       }
@@ -57,8 +57,8 @@ const NotesController = {
     console.log("hello from HELL +++++++++++++++")
     Note.findByIdAndUpdate(
       { _id: req.body._id },
-      { noteContent: req.body.noteContent},
-      {useFindAndModify: false}
+      { noteContent: req.body.noteContent, title: req.body.title, tags: req.body.tags },
+      { useFindAndModify: false }
     ).exec()
     res.status(200).json({ message: 'like added'})
   }
