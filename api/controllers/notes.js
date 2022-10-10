@@ -33,6 +33,7 @@ const NotesController = {
   // },
   Create: async (req, res) => {
     console.log(req.body)
+    req.body.tags = JSON.parse(req.body.tags)
     // const note = new Note(req.body);
     // console.log(note)
     Note.create(req.body).then(async note => {
@@ -58,7 +59,8 @@ const NotesController = {
     Note.findByIdAndUpdate(
       { _id: req.body._id },
       { noteContent: req.body.noteContent},
-      {useFindAndModify: false}
+      {useFindAndModify: false},
+      {articleImage: req.file.originalname}
     ).exec()
     res.status(200).json({ message: 'like added'})
   }

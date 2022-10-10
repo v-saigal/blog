@@ -5,21 +5,27 @@ import './Feed.css'
 import jwt_decode from "jwt-decode";
 
 
+
 const Feed = ({ navigate }) => {
   const [token, setToken] = useState(window.localStorage.getItem("token"));
   let userId;
   if (token === "fakeToken") {userId = 'TestUser'} else {userId = jwt_decode(token).user_id} // Means that tests won't use jwt_decode and therefore won't through errors
-  const [noteValues, setNoteValues] = useState({title:"", noteContent:"", noteAuthor:userId, tags:[]});
-  // const [posts, setPosts] = useState([]);
+  const [noteValues, setNoteValues] = useState({title:"", noteContent:"", noteAuthor:userId, tags:[], articleImage:''});
+  const [fileName, setFileName] = useState('');
   const [notes, setNotes] = useState([]);
-
-  // const [post, setPost] = useState()
-  const [note, setNote] = useState()
+  
   const [counter, setCounter] = useState(0)
 
   // search
   const [query, setQuery] = useState("")
-
+  
+  const onChangeFile = e => {
+    setFileName(e.target.files[0]);
+    console.log(e.target.files)
+   
+    console.log(fileName)
+  }
+  
 
   useEffect(() => {
     if(token) {
@@ -43,6 +49,16 @@ const Feed = ({ navigate }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const formData = new FormData();
+    formData.append('title', noteValues.title)
+    formData.append('noteContent', noteValues.noteContent)
+   
+    formData.append('noteAuthor', noteValues.noteAuthor)
+    formData.append('articleImage', fileName)
+    console.log(formData);
+    
+
     const regEx = /[a-zA-Z0-9]+,/
     if(regEx.test(noteValues.tags.trim().replace(/\s/g,''))) {
     noteValues.tags = noteValues.tags.split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
@@ -53,23 +69,24 @@ const Feed = ({ navigate }) => {
       },
       body: JSON.stringify( noteValues.tags )
     }).then((response) => {
+      console.log(noteValues)
       response.json().then((data) => {
         noteValues.tags = []
         data.tag.forEach((tag) => {
           noteValues.tags.push(tag._id)
         })
+        formData.append('tags', JSON.stringify(noteValues.tags))
         fetch( '/notes', {
           method: 'post',
           headers: {
-            'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify(noteValues)
+          body: formData
         })
           .then(response => {
             if(response.status === 201) {
               setCounter(counter + 1)
-              setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[]})
+              setNoteValues({title:"", noteContent:"", noteAuthor:userId, tags:[], articleImage:''})
               navigate('/notes')
             } else {
               alert('oops something is wrong')
@@ -98,6 +115,7 @@ const Feed = ({ navigate }) => {
        ...noteValues,
         [name]: value
     });
+    //console.log(fileName)
   };
 
   //button back to top
@@ -125,10 +143,14 @@ const Feed = ({ navigate }) => {
       return(
         <>
           <div>
-            <form className="postForm" onSubmit={handleSubmit}>
+            <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
               <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
               <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
               <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
+              <div className='form-group'>
+                <label htmlFor='file'> Choose post image</label>
+                <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/> 
+              </div>
               <input id='submit' type="submit" value="Add a note" />
             </form>
           </div>
@@ -139,7 +161,7 @@ const Feed = ({ navigate }) => {
           <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
 
           {/* notes output */}
-          {console.log(notes)}
+      
           {notes
             .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
