@@ -15,7 +15,7 @@ const NotesController = {
   },
 
   FindById: (req, res) => {
-    Note.findById(req.params.id).find(async (err, note) => {
+    Note.findById(req.params.id).populate('tags').find(async (err, note) => {
       if(err) {
         throw err;
       }
