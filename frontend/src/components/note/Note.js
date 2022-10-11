@@ -45,6 +45,15 @@ const Note = (props) => {
           </NavLink>
         }
       })
+      const imageAppears = (() =>{
+        if (props.note.articleImage != ""){
+          return   <div>
+                    <h3>IMAGE</h3>
+                    <img src={`uploads/${props.note.articleImage}`} alt="Girl in a jacket" width="500" height="600"/>
+                  </div>
+
+        }
+      })
 return(
       <article data-cy="note" className='note' key={ props.note._id }>
 
@@ -75,14 +84,14 @@ return(
        </div>
 
        <div className="container-4">
-          <h3>IMAGE</h3>
-          <img src={`uploads/${props.note.articleImage}`} alt="Girl in a jacket" width="500" height="600"/>
+
+          {imageAppears()}
        </div>
 
 
        {deleteBtnAppears()}
        {editLinkAppears()}
-        
+
       </article>
 )
 }
