@@ -6,8 +6,7 @@ function Edit({navigate}){
     const [token, setToken] = useState(window.localStorage.getItem("token"));
 
 
-    let userId;
-    if (token === "fakeToken") {userId = 'TestUser'} else {userId = jwt_decode(token).user_id} // Means that tests won't use jwt_decode and therefore won't through errors    const [token, setToken] = useState(window.localStorage.getItem("token"));
+
 
     // const [note, setNote] = useState([])
     let userId;
