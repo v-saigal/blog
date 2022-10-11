@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import './LoginForm.css';
-import "./LoginForm.css";
+
 
 const LogInForm = ({ navigate }) => {
   const [email, setEmail] = useState("");
@@ -44,27 +43,48 @@ const LogInForm = ({ navigate }) => {
 
     return (
       <>
-        {/* <h2>Welcome to Acebook</h2>
-        <h3>Please login below:</h3> */}
-        <div className='container'>
 
-        <div className="pic">
-       
+        <div className="Auth-form-container">
+              <form className="Auth-form" onSubmit={handleSubmit}>
+                <div className="Auth-form-content">
+                  <h3 className="Auth-form-title">Sign In</h3>
+                  <div className="form-group mt-3">
+                    <label>Email address</label>
+                    <input
+                      id="email"
+                      type="email"
+                      className="form-control mt-1"
+                      placeholder="Enter email"
+                      value={ email } 
+                      onChange={handleEmailChange}
+                    />
+                  </div>
+                  <div className="form-group mt-3">
+                    <label>Password</label>
+                    <input
+                      id="password"
+                      type="password"
+                      className="form-control mt-1"
+                      placeholder="Enter password"
+                      value={ password }
+                      onChange={handlePasswordChange}
+                    />
+                  </div>
+                  <div className="d-grid gap-2 mt-3">
+                    <button type="submit" id="submit" className="btn btn-primary">
+                      Submit
+                    </button>
+                  </div>
+                  <p className="forgot-password text-right mt-2">
+                    Don't have an <a href="/signup">account?</a>
+                  </p>
+                </div>
+              </form>
         </div>
 
-        <div className='column'>
-          <form onSubmit={handleSubmit}>
-         <h2> Log in </h2>
-          <input placeholder='Email' id="email" type='text' value={ email } onChange={handleEmailChange} />
-          <input placeholder='Password' id="password" type='password' value={ password } onChange={handlePasswordChange} />
-          <input role='submit-button' id='submit' type="submit" value="Submit" />
-          <p>If you don't have an account <a href="/signup">sign up</a> here.</p>
-         </form>
-          </div>
+       </>
 
-        </div>
-      </>
-    );
+  );
 }
 
 export default LogInForm;

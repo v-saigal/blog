@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './Note.css'
 import { Link, NavLink } from 'react-router-dom';
 
 
@@ -55,6 +54,8 @@ const Note = (props) => {
         }
       })
 return(
+  <>
+
       <article data-cy="note" className='note' key={ props.note._id }>
 
       {/* <div className="container-2">
@@ -93,6 +94,7 @@ return(
        {editLinkAppears()}
 
       </article>
+      </>
 )
 }
 

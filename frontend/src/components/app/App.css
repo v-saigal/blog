@@ -1,17 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap');
 
-
-*{
-  font-family: 'Libre Franklin', sans-serif;
+.App {
+  background-color: white;
 }
 
-.root{
-  font-family: 'Libre Franklin', sans-serif;
-  font-size: 25px;
-  margin-top: 10%;
+.Auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  flex-direction: column;
+  height: calc(100vh - 97px);
 }
 
-.root {
-  --green: rgb(43,193,14);
-  --greenblue : linear-gradient(90deg, rgba(43,193,14,1) 0%, rgba(15,240,75,1) 35%, rgba(0,212,255,1) 100%);
+.Auth-form {
+  width: 420px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: white;
+}
+
+.Auth-form-content {
+  padding-left: 12%;
+  padding-right: 12%;
+}
+
+.Auth-form-title {
+  text-align: center;
+  margin-bottom: 1em;
+  font-size: 24px;
+  color: rgb(34, 34, 34);
+  font-weight: 800;
+}
+
+label {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgb(34, 34, 34);
 }
