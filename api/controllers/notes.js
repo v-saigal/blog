@@ -33,6 +33,9 @@ const NotesController = {
   // },
   Create: async (req, res) => {
     console.log(req.body)
+    req.body.tags = JSON.parse(req.body.tags)
+    console.log(req.file)
+    req.body.articleImage = req.file.filename
     // const note = new Note(req.body);
     // console.log(note)
     Note.create(req.body).then(async note => {
@@ -57,8 +60,9 @@ const NotesController = {
     console.log("hello from HELL +++++++++++++++")
     Note.findByIdAndUpdate(
       { _id: req.body._id },
-      { noteContent: req.body.noteContent, title: req.body.title, tags: req.body.tags },
-      { useFindAndModify: false }
+      { noteContent: req.body.noteContent},
+      {useFindAndModify: false},
+      {articleImage: req.file.originalname}
     ).exec()
     res.status(200).json({ message: 'like added'})
   }
