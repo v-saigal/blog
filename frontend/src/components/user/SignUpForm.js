@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './SignUpForm.css'
+
 
 const SignUpForm = ({ navigate }) => {
 
@@ -50,18 +50,58 @@ const SignUpForm = ({ navigate }) => {
   }
 
     return (
-
-      <div className='formContainer'>
-      <form onSubmit={handleSubmit}>
-        <br />
-          <p>Sign Up</p>
-          <input placeholder="Email" id="email" type='text' value={ email } onChange={handleEmailChange} required />
-          <input placeholder="Password" id="password" type='password' value={ password } onChange={handlePasswordChange} minLength="7" required/>
-          <input placeholder="Name" id="username" type='text' value={ username } onChange={handleUsernameChange} required/>
-          <input placeholder="Avatar URL" id="img" type='url' value={ img } onChange={handleImgChange} />
-        <input id='submit' type="submit" value="Submit" />
-      </form>
+      <div className="Auth-form-container">
+        <form className="Auth-form" onSubmit={handleSubmit}>
+          <div className="Auth-form-content">
+            <h3 className="Auth-form-title">Create an account</h3>
+            <div className="text-center">
+              Already registered?{" "}
+              <a className="link-primary" href="/login">
+                Sign In
+              </a>
+            </div>
+            <div className="form-group mt-3">
+              <label>Full Name</label>
+              <input
+                id="username"
+                value={ username } 
+                onChange={handleUsernameChange}
+                type="text"
+                className="form-control mt-1"
+                placeholder="e.g Jane Doe" required
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>Email address</label>
+              <input
+                id="email"
+                value={ email } 
+                onChange={handleEmailChange}
+                type="email"
+                className="form-control mt-1"
+                placeholder="Email Address" required
+              />
+            </div>
+            <div className="form-group mt-3">
+              <label>Password</label>
+              <input
+                id="password"
+                value={ password } 
+                onChange={handlePasswordChange} minLength="7" required
+                type="password"
+                className="form-control mt-1"
+                placeholder="Password"
+              />
+            </div>
+            <div className="d-grid gap-2 mt-3">
+              <button type="submit" className="btn btn-primary">
+                Submit
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
+
     );
 }
 
