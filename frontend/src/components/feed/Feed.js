@@ -22,7 +22,6 @@ const Feed = ({ navigate }) => {
   const onChangeFile = e => {
     setFileName(e.target.files[0]);
     console.log(e.target.files)
-   
     console.log(fileName)
   }
   
@@ -53,7 +52,6 @@ const Feed = ({ navigate }) => {
     const formData = new FormData();
     formData.append('title', noteValues.title)
     formData.append('noteContent', noteValues.noteContent)
-   
     formData.append('noteAuthor', noteValues.noteAuthor)
     formData.append('articleImage', fileName)
     console.log(formData);

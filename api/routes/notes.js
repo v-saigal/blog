@@ -7,7 +7,7 @@ let storage = multer.diskStorage({
       
   destination: (req, file, callback) => {
       console.log('--------------------')
-    callback(null, 'public/uploads');
+    callback(null, '../frontend/public/uploads');
   },
   filename: (req, file, callback) => {
     callback(null, file.originalname);

@@ -34,6 +34,8 @@ const NotesController = {
   Create: async (req, res) => {
     console.log(req.body)
     req.body.tags = JSON.parse(req.body.tags)
+    console.log(req.file)
+    req.body.articleImage = req.file.filename
     // const note = new Note(req.body);
     // console.log(note)
     Note.create(req.body).then(async note => {
