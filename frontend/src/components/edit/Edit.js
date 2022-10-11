@@ -3,10 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 function Edit({navigate}){
-    console.log("Edit reached!")
     const [token, setToken] = useState(window.localStorage.getItem("token"));
+
+
     let userId;
-    if (token === "fakeToken") {userId = 'TestUser'} else {userId = jwt_decode(token).user_id} // Means that tests won't use jwt_decode and therefore won't through errors
+    if (token === "fakeToken") {userId = 'TestUser'} else {userId = jwt_decode(token).user_id} // Means that tests won't use jwt_decode and therefore won't through errors    const [token, setToken] = useState(window.localStorage.getItem("token"));
 
     // const [note, setNote] = useState([])
     let userId;
@@ -61,7 +62,7 @@ function Edit({navigate}){
           noteValues.tags.push(tag._id)
         }
       */
-      
+
       console.log(noteValues);
 
       const handleSubmit = async (event) => {
