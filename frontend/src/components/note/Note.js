@@ -74,6 +74,12 @@ return(
           <p className='message con-4-1'>{ props.note.noteContent }</p>
        </div>
 
+       <div className="container-4">
+          <h3>IMAGE</h3>
+          <img src={`uploads/${props.note.articleImage}`} alt="Girl in a jacket" width="500" height="600"/>
+       </div>
+
+
        {deleteBtnAppears()}
        {editLinkAppears()}
         

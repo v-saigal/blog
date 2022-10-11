@@ -1,7 +1,9 @@
 {
   "dependencies": {
+    "form-data": "^4.0.0",
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^3.1.2",
+    "multer": "^1.4.5-lts.1",
     "react-token-auth": "^2.3.8"
   }
 }

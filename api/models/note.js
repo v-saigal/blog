@@ -17,7 +17,8 @@ const NoteSchema = new mongoose.Schema({
     {
     type: mongoose.Schema.Types.ObjectId,
     ref: Tag,
-  }]
+  }],
+  articleImage: String
 });
 // Update the route? That works with Notema
 // Create some tests to check this works for the model file and controller
