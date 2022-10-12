@@ -170,13 +170,26 @@ const Feed = ({ navigate }) => {
     </ul>)
   }
 
+
+
   function noteButtonList(){
-  if(selectedNotes !="")
+
+  if(selectedNotes !=="")
   {return (<ul>
     {selectedNotes.map((note) =>
-    <div>
-        <button type="button" value={note} onClick={()=> updateSelectedNote(note)}>{note.title} </button>
+    <>
+    <div className='notelist-selector' onClick={()=> updateSelectedNote(note)}>
+   
+      <div className="con-1-2">
+    
+            <h6 className="post-date">{ new Date(note.datePosted).toLocaleDateString("en-uk")}</h6>
       </div>
+      <div className="container-4">
+          <p className='message con-4-1'>{ note.title }</p>
+      </div>
+      
+    </div>
+    </>
     )}
   </ul>)}
   }
