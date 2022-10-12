@@ -163,6 +163,7 @@ const Feed = ({ navigate }) => {
               <div className="row">
 
                   <div className="tags-list border border-dark col-2 view-height">
+                    <h5> Tags </h5>
                     { tagList() }
                   </div>
 

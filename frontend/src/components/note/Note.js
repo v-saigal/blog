@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
+import './Note.css';
 
 
 
@@ -36,19 +37,20 @@ const Note = (props) => {
           }).then(() => {props.counterChanger(prevState => ({count: prevState.counter + 1}))})
       }
 
-      const deleteBtnAppears = (() => {if (props.note.noteAuthor===props.userId) {return <button onClick= {deleteFunction} className={"like"} id={"deleteBtn"} title={"Delete note"}>Delete note</button>}})
+      const deleteBtnAppears = (() => {if (props.note.noteAuthor===props.userId) {return <button onClick= {deleteFunction} className={"like"} id={"deleteBtn"} title={"Delete note"}>Delete</button>}})
+      
       const editLinkAppears = (() => {
         if (props.note.noteAuthor===props.userId){
-          return <NavLink to={`/notes/edit/${props.note._id}`}>
-            Edit
-          </NavLink>
+          return ( 
+          <form action={`/notes/edit/${props.note._id}`}>
+          <input type='submit' value = 'Edit' /> 
+          </form>)
         }
       })
       const imageAppears = (() =>{
         if (props.note.articleImage != ""){
           return   <div>
-                    <h3>IMAGE</h3>
-                    <img src={`uploads/${props.note.articleImage}`} alt="Girl in a jacket" width="500" height="600"/>
+                    <img src={`uploads/${props.note.articleImage}`} alt="Girl in a jacket" width="100%" height="auto"/>
                   </div>
 
         }
@@ -63,32 +65,29 @@ return(
       </div> */}
 
         <div className="con-1-2">
-            <h2 className="post-date">{ date }</h2>
+            <h6 className="post-date">{ date }</h6>
       </div>
 
         <div className="container-4">
-          <h3>TITLE</h3>
           <p className='message con-4-1'>{ props.note.title }</p>
-       </div>
-
-        <div className="container-4">
-          <h3>TAGS</h3>
-          {/* <p className='message con-4-1'>{ props.note.tags }</p> */}
-          <p className='message con-4-1'>
-            { props.note.tags.map(
-              (tag) => (tag.name)).join(',')}</p>
-       </div>
-
-        <div className="container-4">
-          <h3>CONTENT</h3>
-          <p className='message con-4-1'>{ props.note.noteContent }</p>
        </div>
 
        <div className="container-4">
 
-          {imageAppears()}
+              {imageAppears()}
+      </div>
+
+       <div className="container-4">
+          <p className='message con-4-1'>{ props.note.noteContent }</p>
        </div>
 
+        <div className="container-4">
+          <h6>tags:</h6>
+          {/* <p className='message con-4-1'>{ props.note.tags }</p> */}
+          <p className='message con-4-1'>
+            { props.note.tags.map(
+              (tag) => (tag.name)).join(', ')}</p>
+       </div>
 
        {deleteBtnAppears()}
        {editLinkAppears()}
