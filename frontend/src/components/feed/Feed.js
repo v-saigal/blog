@@ -58,6 +58,7 @@ const Feed = ({ navigate }) => {
             })
 
           })
+          setSelectedNotes(data.notes)
           setTags(tagList);
         })
 
@@ -217,6 +218,7 @@ const Feed = ({ navigate }) => {
 
                     .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
                   }
+                  { noteButtonList() }
                 </div>
 
                 <div className="border border-dark col-6 view-height">
@@ -239,7 +241,9 @@ const Feed = ({ navigate }) => {
                   <div className="clearfix"></div>
 
                   {/* display of note/image in column 3 on right */}
-                  <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display"></div>
+                  <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display">
+                    {viewNote()}
+                  </div>
 
                 </div>
 
