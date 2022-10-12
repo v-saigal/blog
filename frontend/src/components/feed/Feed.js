@@ -67,7 +67,7 @@ const Feed = ({ navigate }) => {
 
     const regEx = /[a-zA-Z0-9]+,/
     if(regEx.test(noteValues.tags.trim().replace(/\s/g,''))) {
-    noteValues.tags = noteValues.tags.split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
+    noteValues.tags = noteValues.tags.trim().replace(/\s/g,'').split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
      fetch('/tags', {
       method: 'post',
       headers: {
