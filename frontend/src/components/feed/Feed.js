@@ -66,7 +66,7 @@ const Feed = ({ navigate }) => {
 
     const regEx = /[a-zA-Z0-9]+,/
     if(regEx.test(noteValues.tags.trim().replace(/\s/g,''))) {
-    noteValues.tags = noteValues.tags.split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
+    noteValues.tags = noteValues.tags.trim().replace(/\s/g,'').split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
      fetch('/tags', {
       method: 'post',
       headers: {
@@ -218,7 +218,11 @@ const Feed = ({ navigate }) => {
 
 
           {/* search function */}
+<<<<<<< HEAD
+          <input placeholder="Search notes" onChange={event => setQuery(event.target.value)} />
+=======
           {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} /> */}
+>>>>>>> f78f40cc9b485978228d6df5b22a0fcadd42080b
 
           {/* notes output */}
       
