@@ -136,19 +136,6 @@ const Feed = ({ navigate }) => {
     //console.log(fileName)
   };
 
-  //button back to top
-  let mybutton = document.getElementById("myBtn");
-
-  // When the user scrolls down 20px from the top of the document, show the button
-  window.onscroll = function() {scrollFunction()};
-
-  function scrollFunction() {
-    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-      mybutton.style.display = "block";
-    } else {
-      mybutton.style.display = "none";
-    }
-  }
 
   function updateSelectedTag(value){
     setSelectedTag(value)
@@ -164,7 +151,7 @@ const Feed = ({ navigate }) => {
       {tags.map((tag) =>
       <div>
           <button type="button" value={tag} onClick={()=> updateSelectedTag(tag)}>{tag.name} {tag.notes.length}</button>
-        </div>
+      </div>
       )}
     </ul>)
   }
@@ -198,11 +185,10 @@ const Feed = ({ navigate }) => {
     return(
       <>
 
-        <div className="container-fluid">
 
           {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
 
-          <div className="container-fluid">
+          <div className="container">
             <div className="row">
 
                 <div className="tags-list border border-dark col-2 view-height">
@@ -240,13 +226,12 @@ const Feed = ({ navigate }) => {
                   <div className="clearfix"></div>
 
                   {/* display of note/image in column 3 on right */}
-                  <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display"></div>
+                  <div className="notes-display border border-dark mh-100" id='notes-display' name="notes-display"></div>
 
                 </div>
 
             </div>
           </div>
-        </div>
 
       </>
     )

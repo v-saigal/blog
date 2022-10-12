@@ -40,3 +40,7 @@ label {
   color: rgb(34, 34, 34);
 }
 
+#root {
+  height: 100vh;
+}
+

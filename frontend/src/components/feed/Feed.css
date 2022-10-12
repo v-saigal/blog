@@ -39,3 +39,7 @@
     margin-top: 20px;
     overflow: auto;
 }
+
+.col-2, .col-4, .col-6 {
+    height: calc(100vh - 97px - 16px);
+}
