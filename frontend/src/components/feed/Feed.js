@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Note from '../note/Note'
 import jwt_decode from "jwt-decode";
+import './Feed.css';
 
 
 
@@ -137,12 +138,6 @@ const Feed = ({ navigate }) => {
     }
   }
 
-  // When the user clicks on the button, scroll to the top of the document
-  function topFunction() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  }
-
   const tagList = () =>{
     return (<ul>
       {tags.map((tag) =>
@@ -160,22 +155,20 @@ const Feed = ({ navigate }) => {
       return(
         <>
 
-          <div className="container-fluid border border-dark">
-            <h1 className="border border-dark">Build Out Three Columns</h1>
-
-           
+          <div className="container-fluid">
+        
             {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
 
-          
             <div className="container-fluid">
               <div className="row">
 
-                  <div className="border border-dark col-2 view-height">
+                  <div className="tags-list border border-dark col-2 view-height">
                     { tagList() }
                   </div>
 
-                  <div className="border border-dark col-4 view-height">
-                    <input placeholder="Search" onChange={event => setQuery(event.target.value)} />
+                  <div className="titles-list border border-dark col-4 view-height">
+                    <i class="bi bi-search"></i>
+                    <input className='w-75 search-area' placeholder="Search" onChange={event => setQuery(event.target.value)} />
 
                     {notes
                      .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
@@ -185,55 +178,33 @@ const Feed = ({ navigate }) => {
                   </div>
 
                   <div className="border border-dark col-6 view-height">
+
                     <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
-                      <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-                      <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
-                      <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
+                      <input className='w-100 border' type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+                      <input className='w-100 border' type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
+                      <textarea className='w-100 border textBox' id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
+                     
+                      <div className="clearfix"></div>
+
                       <div className='form-group'>
-                        <label htmlFor='file'> Choose post image</label>
-                        <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/> 
+                        {/* <label htmlFor='file'> Choose post image</label> */}
+                        <input type='file' id='articleImage' name='articleImage' filename='articleImage' className='form-control-file float-start btn btn-primary' onChange={onChangeFile}/> 
+                        <div className=""></div>
+                        <input className='float-end btn btn-primary' id='submit' type="submit" value="Add a note" />
                       </div>
-                      <input id='submit' type="submit" value="Add a note" />
                     </form>
+
+                    <div className="clearfix"></div>
+
+                    {/* display of note/image in column 3 on right */}
+                    <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display"></div>
+
                   </div>
 
               </div>
             </div>
           </div>
 
-
-          {/* <div>
-            <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
-              <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-              <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
-              <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
-              <div className='form-group'>
-                <label htmlFor='file'> Choose post image</label>
-                <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/> 
-              </div>
-              <input id='submit' type="submit" value="Add a note" />
-            </form>
-          </div> */}
-
-
-
-          {/* search function */}
-<<<<<<< HEAD
-          <input placeholder="Search notes" onChange={event => setQuery(event.target.value)} />
-=======
-          {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} /> */}
->>>>>>> f78f40cc9b485978228d6df5b22a0fcadd42080b
-
-          {/* notes output */}
-      
-          {/* {notes
-            .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
-
-            .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-          } */}
-
-          {/* back to top button */}
-          <button onClick= {topFunction} id="myBtn" title="Go to top">Top</button>
         </>
       )
     } else {

@@ -9,8 +9,8 @@ const Note = (props) => {
   //const [showCommentForm, setShowCommentForm] = useState(false);
 
   const date = new Date(props.note.datePosted).toLocaleDateString("en-uk", {
-      hour: "2-digit",
-      minute: "2-digit",
+      // hour: "2-digit",
+      // minute: "2-digit",
       year: "numeric",
       month: "short",
       weekday: "long",
