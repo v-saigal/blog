@@ -18,6 +18,10 @@
     word-wrap: break-word;
 }
 
+.notelist-selector:hover {
+    background-color: yellowgreen;
+}
+
 
 
 /* column three */
