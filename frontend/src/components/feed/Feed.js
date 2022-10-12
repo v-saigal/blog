@@ -135,11 +135,85 @@ const Feed = ({ navigate }) => {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
+  // function tagOutput() {
+
+  //    notes.forEach((note) => {
+  //      note.tags.map( tag => tag.name)
+  // })}
+
+
+  function noteTest(props) {
+    const tags = props.tags;
+    const tagsItem = tags.map((tag) => 
+      <Note key={tag}
+      value={tag} />
+    );
+    return (
+      <p>
+        {tagsItem}
+      </p>
+    )
+  }
 
     if(token) {
       return(
         <>
-          <div>
+
+          <div class="container-fluid border border-dark">
+            <h1 class="border border-dark">Build Out Three Columns</h1>
+
+           
+            {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
+
+          
+            <div class="container-fluid">
+              <div class="row">
+
+                  <div class="border border-dark col-2 view-height">
+                    
+                   { noteTest }
+                    {/* <p>
+                      { notes.forEach(note => {
+                          note.tags.map( tag => {return (<li>{tag.name}</li>) })
+                        })
+                      }
+                    </p> */}
+
+                    {/* <p className='message con-4-1'>
+                    { props.note.tags.map(
+                      (tag) => (tag.name)).join(',')}</p> */}
+                          
+                  </div>
+
+                  <div class="border border-dark col-4 view-height">
+                    <input placeholder="Search" onChange={event => setQuery(event.target.value)} />
+
+                    {notes
+                     .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
+
+                      .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
+                    }
+                  </div>
+
+                  <div class="border border-dark col-6 view-height">
+                    <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
+                      <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+                      <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
+                      <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
+                      <div className='form-group'>
+                        <label htmlFor='file'> Choose post image</label>
+                        <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/> 
+                      </div>
+                      <input id='submit' type="submit" value="Add a note" />
+                    </form>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          {/* <div>
             <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
               <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
               <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
@@ -150,20 +224,20 @@ const Feed = ({ navigate }) => {
               </div>
               <input id='submit' type="submit" value="Add a note" />
             </form>
-          </div>
+          </div> */}
 
 
 
           {/* search function */}
-          <input placeholder="Enter Post Title" onChange={event => setQuery(event.target.value)} />
+          {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} /> */}
 
           {/* notes output */}
       
-          {notes
+          {/* {notes
             .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
             .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-          }
+          } */}
 
           {/* back to top button */}
           <button onClick= {topFunction} id="myBtn" title="Go to top">Top</button>
