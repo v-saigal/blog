@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import Post from '../post/Post'
 import Note from '../note/Note'
 import jwt_decode from "jwt-decode";
 
@@ -12,7 +11,8 @@ const Feed = ({ navigate }) => {
   const [noteValues, setNoteValues] = useState({title:"", noteContent:"", noteAuthor:userId, tags:[], articleImage:''});
   const [fileName, setFileName] = useState('');
   const [notes, setNotes] = useState([]);
-  
+  const [tags, setTags] = useState([]);
+
   const [counter, setCounter] = useState(0)
 
   // search
@@ -38,6 +38,14 @@ const Feed = ({ navigate }) => {
           window.localStorage.setItem("token", data.token)
           setToken(window.localStorage.getItem("token"))
           setNotes(data.notes);
+
+          let tagList = []
+          data.notes.forEach(note => {
+            note.tags.forEach(tag =>{
+              tagList.push(tag.name)
+            })
+          })
+          setTags(tagList);
         })
 
     }
@@ -135,11 +143,66 @@ const Feed = ({ navigate }) => {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
+  const tagList = () =>{
+    return (<ul>
+      {tags.map((tag) =>
+      <div>
+        {tag}
+       
+        </div>
+      )}
+    </ul>)
+  }
+
+
 
     if(token) {
       return(
         <>
-          <div>
+
+          <div className="container-fluid border border-dark">
+            <h1 className="border border-dark">Build Out Three Columns</h1>
+
+           
+            {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
+
+          
+            <div className="container-fluid">
+              <div className="row">
+
+                  <div className="border border-dark col-2 view-height">
+                    { tagList() }
+                  </div>
+
+                  <div className="border border-dark col-4 view-height">
+                    <input placeholder="Search" onChange={event => setQuery(event.target.value)} />
+
+                    {notes
+                     .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
+
+                      .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
+                    }
+                  </div>
+
+                  <div className="border border-dark col-6 view-height">
+                    <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
+                      <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+                      <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
+                      <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
+                      <div className='form-group'>
+                        <label htmlFor='file'> Choose post image</label>
+                        <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/> 
+                      </div>
+                      <input id='submit' type="submit" value="Add a note" />
+                    </form>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+
+
+          {/* <div>
             <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
               <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
               <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
@@ -150,20 +213,24 @@ const Feed = ({ navigate }) => {
               </div>
               <input id='submit' type="submit" value="Add a note" />
             </form>
-          </div>
+          </div> */}
 
 
 
           {/* search function */}
+<<<<<<< HEAD
           <input placeholder="Search notes" onChange={event => setQuery(event.target.value)} />
+=======
+          {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} /> */}
+>>>>>>> f78f40cc9b485978228d6df5b22a0fcadd42080b
 
           {/* notes output */}
       
-          {notes
+          {/* {notes
             .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
             .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-          }
+          } */}
 
           {/* back to top button */}
           <button onClick= {topFunction} id="myBtn" title="Go to top">Top</button>
