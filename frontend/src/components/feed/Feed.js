@@ -58,6 +58,7 @@ const Feed = ({ navigate }) => {
             })
 
           })
+          setSelectedNotes(data.notes)
           setTags(tagList);
         })
 
@@ -161,7 +162,7 @@ const Feed = ({ navigate }) => {
   {return (<ul>
     {selectedNotes.map((note) =>
     <div>
-        <button type="button" value={note} onClick={()=> updateSelectedNote(note)}>{note.title}</button>
+        <button type="button" value={note} onClick={()=> updateSelectedNote(note)}>{note.title} </button>
       </div>
     )}
   </ul>)}
@@ -179,7 +180,16 @@ const Feed = ({ navigate }) => {
     }
   }
 
+  const updateFilterOptions = (event) =>{
 
+      setSelectedNotes(notes.filter(note => { return note.title.includes(event.target.value) || note.noteContent.includes(event.target.value) || note.tags.includes(event.target.value)}))
+
+
+
+  }
+
+
+  }
 
   if(token) {
     return(
@@ -194,16 +204,16 @@ const Feed = ({ navigate }) => {
                 <div className="tags-list border border-dark col-2 view-height">
                   { tagButtonList() }
                 </div>
-
                 <div className="titles-list border border-dark col-4 view-height">
                   <i class="bi bi-search"></i>
-                  <input className='w-75 search-area' placeholder="Search" onChange={event => setQuery(event.target.value)} />
+                  <input className='w-75 search-area' placeholder="Search" onChange={updateFilterOptions} />
 
-                  {notes
+                  {/* {notes
                    .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
                     .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-                  }
+                  } */}
+                  { noteButtonList() }
                 </div>
 
                 <div className="border border-dark col-6 view-height">
@@ -226,7 +236,9 @@ const Feed = ({ navigate }) => {
                   <div className="clearfix"></div>
 
                   {/* display of note/image in column 3 on right */}
-                  <div className="notes-display border border-dark mh-100" id='notes-display' name="notes-display"></div>
+                  <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display">
+                    {viewNote()}
+                  </div>
 
                 </div>
 

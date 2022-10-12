@@ -15,6 +15,7 @@
 
 .titles-list {
     overflow: auto;
+    word-wrap: break-word;
 }
 
 
