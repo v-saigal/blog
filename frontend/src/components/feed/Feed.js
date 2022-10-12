@@ -13,18 +13,21 @@ const Feed = ({ navigate }) => {
   const [fileName, setFileName] = useState('');
   const [notes, setNotes] = useState([]);
   const [tags, setTags] = useState([]);
+  const [selectedTag, setSelectedTag] = useState("")
+  const [selectedNote, setSelectedNote] = useState("")
+  const [selectedNotes, setSelectedNotes] = useState("")
 
   const [counter, setCounter] = useState(0)
 
   // search
   const [query, setQuery] = useState("")
-  
+
   const onChangeFile = e => {
     setFileName(e.target.files[0]);
     console.log(e.target.files)
     console.log(fileName)
   }
-  
+
 
   useEffect(() => {
     if(token) {
@@ -43,8 +46,17 @@ const Feed = ({ navigate }) => {
           let tagList = []
           data.notes.forEach(note => {
             note.tags.forEach(tag =>{
-              tagList.push(tag.name)
+              const i = tagList.map(e => e.name).indexOf(tag.name)
+              console.log(i)
+              if (i > -1){
+                console.log("hit if")
+                tagList[i].notes.push(note)
+              }else{
+                console.log("hit else")
+                tagList.push({name:tag.name, tagId:tag.id, notes:[note]})
+              }
             })
+
           })
           setTags(tagList);
         })
@@ -63,7 +75,7 @@ const Feed = ({ navigate }) => {
     formData.append('noteAuthor', noteValues.noteAuthor)
     formData.append('articleImage', fileName)
     console.log(formData);
-    
+
 
     const regEx = /[a-zA-Z0-9]+,/
     if(regEx.test(noteValues.tags.trim().replace(/\s/g,''))) {
@@ -138,80 +150,112 @@ const Feed = ({ navigate }) => {
     }
   }
 
-  const tagList = () =>{
+  function updateSelectedTag(value){
+    setSelectedTag(value)
+    setSelectedNotes(value.notes)
+    setSelectedNote("")
+  }
+  function updateSelectedNote(value){
+    console.log(value)
+    setSelectedNote(value)
+  }
+  const tagButtonList = () =>{
     return (<ul>
       {tags.map((tag) =>
       <div>
-        {tag}
-       
+          <button type="button" value={tag} onClick={()=> updateSelectedTag(tag)}>{tag.name} {tag.notes.length}</button>
         </div>
       )}
     </ul>)
   }
 
+  function noteButtonList(){
+  if(selectedNotes !="")
+  {return (<ul>
+    {selectedNotes.map((note) =>
+    <div>
+        <button type="button" value={note} onClick={()=> updateSelectedNote(note)}>{note.title}</button>
+      </div>
+    )}
+  </ul>)}
+  }
+
+  const viewNote = () => {
+    if (selectedNote != ""){
+      return (
+        <div>
+
+            <Note note={ selectedNote } key={ selectedNote._id } token={ token } userId={userId} title={ selectedNote.title } tags={ selectedNote.tags } counterChanger={ setCounter }/>
+
+        </div>
+      )
+    }
+  }
 
 
-    if(token) {
-      return(
-        <>
+
+  if(token) {
+    return(
+      <>
+
+        <div className="container-fluid">
+
+          {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
 
           <div className="container-fluid">
-        
-            {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
+            <div className="row">
 
-            <div className="container-fluid">
-              <div className="row">
-
+                <div className="tags-list border border-dark col-2 view-height">
+                  { tagButtonList() }
+                </div>
                   <div className="tags-list border border-dark col-2 view-height">
                     <h5> Tags </h5>
                     { tagList() }
                   </div>
+                <div className="titles-list border border-dark col-4 view-height">
+                  <i class="bi bi-search"></i>
+                  <input className='w-75 search-area' placeholder="Search" onChange={event => setQuery(event.target.value)} />
 
-                  <div className="titles-list border border-dark col-4 view-height">
-                    <i class="bi bi-search"></i>
-                    <input className='w-75 search-area' placeholder="Search" onChange={event => setQuery(event.target.value)} />
+                  {notes
+                   .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
-                    {notes
-                     .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
+                    .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
+                  }
+                </div>
 
-                      .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-                    }
-                  </div>
+                <div className="border border-dark col-6 view-height">
 
-                  <div className="border border-dark col-6 view-height">
-
-                    <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
-                      <input className='w-100 border' type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-                      <input className='w-100 border' type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
-                      <textarea className='w-100 border textBox' id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
-                     
-                      <div className="clearfix"></div>
-
-                      <div className='form-group'>
-                        {/* <label htmlFor='file'> Choose post image</label> */}
-                        <input type='file' id='articleImage' name='articleImage' filename='articleImage' className='form-control-file float-start btn btn-primary' onChange={onChangeFile}/> 
-                        <div className=""></div>
-                        <input className='float-end btn btn-primary' id='submit' type="submit" value="Add a note" />
-                      </div>
-                    </form>
+                  <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
+                    <input className='w-100 border' type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+                    <input className='w-100 border' type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
+                    <textarea className='w-100 border textBox' id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
 
                     <div className="clearfix"></div>
 
-                    {/* display of note/image in column 3 on right */}
-                    <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display"></div>
+                    <div className='form-group'>
+                      {/* <label htmlFor='file'> Choose post image</label> */}
+                      <input type='file' id='articleImage' name='articleImage' filename='articleImage' className='form-control-file float-start btn btn-primary' onChange={onChangeFile}/>
+                      <div className=""></div>
+                      <input className='float-end btn btn-primary' id='submit' type="submit" value="Add a note" />
+                    </div>
+                  </form>
 
-                  </div>
+                  <div className="clearfix"></div>
 
-              </div>
+                  {/* display of note/image in column 3 on right */}
+                  <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display"></div>
+
+                </div>
+
             </div>
           </div>
+        </div>
 
-        </>
-      )
-    } else {
-      navigate('/signin')
-    }
+      </>
+    )
+  } else {
+    navigate('/signin')
+  }
 }
 
 export default Feed;
-
