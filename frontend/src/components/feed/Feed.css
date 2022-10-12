@@ -22,6 +22,12 @@
     background-color: yellowgreen;
 }
 
+.notelist-selector:focus {
+    background-color: yellowgreen;
+}
+
+
+
 
 
 /* column three */

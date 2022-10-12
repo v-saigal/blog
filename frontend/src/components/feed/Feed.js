@@ -164,7 +164,8 @@ const Feed = ({ navigate }) => {
     return (<ul>
       {tags.map((tag) =>
       <div>
-          <button type="button" value={tag} onClick={()=> updateSelectedTag(tag)}>{tag.name} {tag.notes.length}</button>
+         <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedTag(tag)}>{tag.name} {tag.notes.length} 
+         </div>
         </div>
       )}
     </ul>)
@@ -178,7 +179,7 @@ const Feed = ({ navigate }) => {
   {return (<ul>
     {selectedNotes.map((note) =>
     <>
-    <div className='notelist-selector' onClick={()=> updateSelectedNote(note)}>
+    <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedNote(note)}>
    
       <div className="con-1-2">
     
