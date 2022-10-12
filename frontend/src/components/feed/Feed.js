@@ -208,10 +208,6 @@ const Feed = ({ navigate }) => {
                 <div className="tags-list border border-dark col-2 view-height">
                   { tagButtonList() }
                 </div>
-                  <div className="tags-list border border-dark col-2 view-height">
-                    <h5> Tags </h5>
-                    { tagList() }
-                  </div>
                 <div className="titles-list border border-dark col-4 view-height">
                   <i class="bi bi-search"></i>
                   <input className='w-75 search-area' placeholder="Search" onChange={event => setQuery(event.target.value)} />
