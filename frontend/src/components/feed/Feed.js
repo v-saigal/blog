@@ -12,18 +12,21 @@ const Feed = ({ navigate }) => {
   const [fileName, setFileName] = useState('');
   const [notes, setNotes] = useState([]);
   const [tags, setTags] = useState([]);
+  const [selectedTag, setSelectedTag] = useState("")
+  const [selectedNote, setSelectedNote] = useState("")
+  const [selectedNotes, setSelectedNotes] = useState("")
 
   const [counter, setCounter] = useState(0)
 
   // search
   const [query, setQuery] = useState("")
-  
+
   const onChangeFile = e => {
     setFileName(e.target.files[0]);
     console.log(e.target.files)
     console.log(fileName)
   }
-  
+
 
   useEffect(() => {
     if(token) {
@@ -42,8 +45,17 @@ const Feed = ({ navigate }) => {
           let tagList = []
           data.notes.forEach(note => {
             note.tags.forEach(tag =>{
-              tagList.push(tag.name)
+              const i = tagList.map(e => e.name).indexOf(tag.name)
+              console.log(i)
+              if (i > -1){
+                console.log("hit if")
+                tagList[i].notes.push(note)
+              }else{
+                console.log("hit else")
+                tagList.push({name:tag.name, tagId:tag.id, notes:[note]})
+              }
             })
+
           })
           setTags(tagList);
         })
@@ -62,7 +74,7 @@ const Feed = ({ navigate }) => {
     formData.append('noteAuthor', noteValues.noteAuthor)
     formData.append('articleImage', fileName)
     console.log(formData);
-    
+
 
     const regEx = /[a-zA-Z0-9]+,/
     if(regEx.test(noteValues.tags.trim().replace(/\s/g,''))) {
@@ -142,16 +154,46 @@ const Feed = ({ navigate }) => {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
-
-  const tagList = () =>{
+  function updateSelectedTag(value){
+    setSelectedTag(value)
+    setSelectedNotes(value.notes)
+    setSelectedNote("")
+  }
+  function updateSelectedNote(value){
+    console.log(value)
+    setSelectedNote(value)
+  }
+  const tagButtonList = () =>{
     return (<ul>
       {tags.map((tag) =>
       <div>
-        {tag}
-       
+          <button type="button" value={tag} onClick={()=> updateSelectedTag(tag)}>{tag.name} {tag.notes.length}</button>
         </div>
       )}
     </ul>)
+  }
+
+  function noteButtonList(){
+  if(selectedNotes !="")
+  {return (<ul>
+    {selectedNotes.map((note) =>
+    <div>
+        <button type="button" value={note} onClick={()=> updateSelectedNote(note)}>{note.title}</button>
+      </div>
+    )}
+  </ul>)}
+  }
+
+  const viewNote = () => {
+    if (selectedNote != ""){
+      return (
+        <div>
+
+            <Note note={ selectedNote } key={ selectedNote._id } token={ token } userId={userId} title={ selectedNote.title } tags={ selectedNote.tags } counterChanger={ setCounter }/>
+
+        </div>
+      )
+    }
   }
 
 
@@ -163,25 +205,26 @@ const Feed = ({ navigate }) => {
           <div className="container-fluid border border-dark">
             <h1 className="border border-dark">Build Out Three Columns</h1>
 
-           
+
             {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
 
-          
+
             <div className="container-fluid">
               <div className="row">
 
                   <div className="border border-dark col-2 view-height">
-                    { tagList() }
+                    { tagButtonList() }
                   </div>
 
                   <div className="border border-dark col-4 view-height">
-                    <input placeholder="Search" onChange={event => setQuery(event.target.value)} />
+                    {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} />
 
                     {notes
                      .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
                       .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-                    }
+                    } */}
+                    {noteButtonList()}
                   </div>
 
                   <div className="border border-dark col-6 view-height">
@@ -191,10 +234,12 @@ const Feed = ({ navigate }) => {
                       <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
                       <div className='form-group'>
                         <label htmlFor='file'> Choose post image</label>
-                        <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/> 
+                        <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/>
                       </div>
                       <input id='submit' type="submit" value="Add a note" />
                     </form>
+                    <br/>
+                    {viewNote()}
                   </div>
 
               </div>
@@ -209,7 +254,7 @@ const Feed = ({ navigate }) => {
               <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
               <div className='form-group'>
                 <label htmlFor='file'> Choose post image</label>
-                <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/> 
+                <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/>
               </div>
               <input id='submit' type="submit" value="Add a note" />
             </form>
@@ -221,7 +266,7 @@ const Feed = ({ navigate }) => {
           {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} /> */}
 
           {/* notes output */}
-      
+
           {/* {notes
             .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
