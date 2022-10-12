@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-// import Post from '../post/Post'
 import Note from '../note/Note'
 import jwt_decode from "jwt-decode";
 
@@ -12,7 +11,8 @@ const Feed = ({ navigate }) => {
   const [noteValues, setNoteValues] = useState({title:"", noteContent:"", noteAuthor:userId, tags:[], articleImage:''});
   const [fileName, setFileName] = useState('');
   const [notes, setNotes] = useState([]);
-  
+  const [tags, setTags] = useState([]);
+
   const [counter, setCounter] = useState(0)
 
   // search
@@ -38,6 +38,14 @@ const Feed = ({ navigate }) => {
           window.localStorage.setItem("token", data.token)
           setToken(window.localStorage.getItem("token"))
           setNotes(data.notes);
+
+          let tagList = []
+          data.notes.forEach(note => {
+            note.tags.forEach(tag =>{
+              tagList.push(tag.name)
+            })
+          })
+          setTags(tagList);
         })
 
     }
@@ -135,57 +143,38 @@ const Feed = ({ navigate }) => {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
 
-  // function tagOutput() {
-
-  //    notes.forEach((note) => {
-  //      note.tags.map( tag => tag.name)
-  // })}
-
-
-  function noteTest(props) {
-    const tags = props.tags;
-    const tagsItem = tags.map((tag) => 
-      <Note key={tag}
-      value={tag} />
-    );
-    return (
-      <p>
-        {tagsItem}
-      </p>
-    )
+  const tagList = () =>{
+    return (<ul>
+      {tags.map((tag) =>
+      <div>
+        {tag}
+       
+        </div>
+      )}
+    </ul>)
   }
+
+
 
     if(token) {
       return(
         <>
 
-          <div class="container-fluid border border-dark">
-            <h1 class="border border-dark">Build Out Three Columns</h1>
+          <div className="container-fluid border border-dark">
+            <h1 className="border border-dark">Build Out Three Columns</h1>
 
            
             {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
 
           
-            <div class="container-fluid">
-              <div class="row">
+            <div className="container-fluid">
+              <div className="row">
 
-                  <div class="border border-dark col-2 view-height">
-                    
-                   { noteTest }
-                    {/* <p>
-                      { notes.forEach(note => {
-                          note.tags.map( tag => {return (<li>{tag.name}</li>) })
-                        })
-                      }
-                    </p> */}
-
-                    {/* <p className='message con-4-1'>
-                    { props.note.tags.map(
-                      (tag) => (tag.name)).join(',')}</p> */}
-                          
+                  <div className="border border-dark col-2 view-height">
+                    { tagList() }
                   </div>
 
-                  <div class="border border-dark col-4 view-height">
+                  <div className="border border-dark col-4 view-height">
                     <input placeholder="Search" onChange={event => setQuery(event.target.value)} />
 
                     {notes
@@ -195,7 +184,7 @@ const Feed = ({ navigate }) => {
                     }
                   </div>
 
-                  <div class="border border-dark col-6 view-height">
+                  <div className="border border-dark col-6 view-height">
                     <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
                       <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
                       <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
