@@ -1,13 +1,22 @@
-# Acebook-OVO
+# Share-a-note
 
-The OVO team's Acebook, using a MERN stack.
+Share-a-note is a wiki-style app for organising notes using a MERN stack.
+
+Users can create an account, log-in and start creating notes. 
+Notes can be tagged for easy organisation. 
+Notes can include images. 
+Notes can be deleted and edited.
+Notes can be searched.
+
+The main view is split into three easy to navigate sections: tag list, note list and note editing area.
+
 ## Trello Link
 
-https://trello.com/b/w0xoTYE5/acebook-ovo 
+https://trello.com/b/HGz4vQoe/share-a-note
 
 ## Miro Board
 
-https://miro.com/app/board/uXjVPUinYkY=/
+https://miro.com/app/board/uXjVPRMAEws=/
 
 ## Pre-existing Features
 
@@ -15,9 +24,8 @@ It was already possible for a user to:
 - Sign up
 - Sign in
 - Sign out
-- View a list of posts
+- View a list of notes
 
-All existed as routes and the most very basic appearance in the frontend.
 ## Technologies
 
 This project used a 'MERN' stack
@@ -39,12 +47,12 @@ We also used...
 - [Jest](https://jestjs.io/) for unit testing on the back end
 - [Cypress](https://www.cypress.io/) for end-to-end testing and component testing, on the front end
 - [Mongoose](https://mongoosejs.com) to model objects in MongoDB.
-- [Handlebars](https://handlebarsjs.com/) for the `home` template.
 - [ESLint](https://eslint.org) for linting.
 - [Nodemon](https://nodemon.io/) to reload the server automatically.
 - [JWT](https://jwt.io/) for security.
 - [Heroku](https://www.heroku.com) for backend and frontend hosting.
 - [MongoDB-Atlas](https://www.mongodb.com/atlas/database) for database hosting.
+- [Bootstrap](https://getbootstrap.com) for frontend styling.
 
 ## Architecture
 
@@ -55,30 +63,33 @@ This application is comprised of two distinct pieces.
 
 The React front end sends HTTP requests to the backend API and receives JSON in response body, rather than a whole page of HTML.
 
-For example, the React front end would send this request to retrieve the entire `Post` collection.
+For example, the React front end would send this request to retrieve the entire `Notes` collection.
 
 ```
-GET "/posts"
+GET "/notes"
 ```
 
 And the body of the response would look like this.
 
 ```
 {
-    "posts": [
+    "notes": [
         {
             "_id": "62f8ef0e6c1ffcf74cbbb181",
-            "message": "Hello, this is my first Acebook post!",
+            "title": "My first note",
+            "noteContent": "This is a new note"
             "__v": 0
         },
         {
-            "_id": "62f8ef366c1ffcf74cbbb188",
-            "message": "Welcome to Acebook! Have an Acetime :)",
+            "_id": "62f8ef0e6c1ffcf74cbbb181",
+            "title": "My second note",
+            "noteContent": "This is my second note"
             "__v": 0
         },
         {
-            "_id": "62f8f08af1cffef85a7426ae",
-            "message": "Thank you :D",
+            "_id": "62f8ef0e6c1ffcf74cbbb181",
+            "title": "My third note",
+            "noteContent": "This is my third note"
             "__v": 0
         }
     ]
@@ -92,7 +103,7 @@ Here's a diagram of the above
 <br>
 <br>
 
-Once recieved by the React FE, the JSON in the response body is used to render a list of posts on the page.
+Once recieved by the React FE, the JSON in the response body is used to render a list of notes on the page.
 
 ![reponse body mapped onto a page](./diagrams/response_parsing.png)
 
@@ -108,7 +119,7 @@ Here's the authentication flow for this application
 3. If a user is found, the password in the database is compared to the password that was submitted.
 4. If the passwords match, a JSON Web Token is generated and returned, as part of the response.
 5. The React front end receives the token and holds on to it.
-6. Every request to `"/posts"` must include a valid token (which is checked by the backend).
+6. Every request to `"/notes"` must include a valid token (which is checked by the backend).
 7. When the user logs out, the front end discards the token.
 
 ![authentication flow diagram](./diagrams/auth_flow.png)
@@ -127,7 +138,7 @@ Here, we've used an environment variable called `JWT_SECRET`, which you'll see u
 
 ## Quickstart
 
-The application is set up on Heroku with a [frontend](book-ovo-frontend.herokuapp.com) and a [backend](book-ovo-frontend.herokuapp.com). Alternatively follow the instructions
+
 ### If running the project locally, do the following:
 
 1. Install Node Version Manager (NVM)
