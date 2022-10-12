@@ -175,7 +175,7 @@ const Feed = ({ navigate }) => {
   {return (<ul>
     {selectedNotes.map((note) =>
     <div>
-        <button type="button" value={note} onClick={()=> updateSelectedNote(note)}>{note.title}</button>
+        <button type="button" value={note} onClick={()=> updateSelectedNote(note)}>{note.title} </button>
       </div>
     )}
   </ul>)}
@@ -193,7 +193,13 @@ const Feed = ({ navigate }) => {
     }
   }
 
+  const updateFilterOptions = (event) =>{
 
+      setSelectedNotes(notes.filter(note => { return note.title.includes(event.target.value) || note.noteContent.includes(event.target.value) || note.tags.includes(event.target.value)}))
+
+
+
+  }
 
   if(token) {
     return(
@@ -211,13 +217,13 @@ const Feed = ({ navigate }) => {
                 </div>
                 <div className="titles-list border border-dark col-4 view-height">
                   <i class="bi bi-search"></i>
-                  <input className='w-75 search-area' placeholder="Search" onChange={event => setQuery(event.target.value)} />
+                  <input className='w-75 search-area' placeholder="Search" onChange={updateFilterOptions} />
 
-                  {notes
+                  {/* {notes
                    .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
                     .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-                  }
+                  } */}
                   { noteButtonList() }
                 </div>
 
