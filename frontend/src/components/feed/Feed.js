@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Note from '../note/Note'
 import jwt_decode from "jwt-decode";
+import './Feed.css';
 
 
 
@@ -78,7 +79,7 @@ const Feed = ({ navigate }) => {
 
     const regEx = /[a-zA-Z0-9]+,/
     if(regEx.test(noteValues.tags.trim().replace(/\s/g,''))) {
-    noteValues.tags = noteValues.tags.split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
+    noteValues.tags = noteValues.tags.trim().replace(/\s/g,'').split(",")  //.replace(/[^,a-zA-Z0-9]/g,' ,')
      fetch('/tags', {
       method: 'post',
       headers: {
@@ -149,11 +150,6 @@ const Feed = ({ navigate }) => {
     }
   }
 
-  // When the user clicks on the button, scroll to the top of the document
-  function topFunction() {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  }
   function updateSelectedTag(value){
     setSelectedTag(value)
     setSelectedNotes(value.notes)
@@ -198,89 +194,65 @@ const Feed = ({ navigate }) => {
 
 
 
-    if(token) {
-      return(
-        <>
+  if(token) {
+    return(
+      <>
 
-          <div className="container-fluid border border-dark">
-            <h1 className="border border-dark">Build Out Three Columns</h1>
+        <div className="container-fluid">
 
+          {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
 
-            {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
+          <div className="container-fluid">
+            <div className="row">
 
+                <div className="tags-list border border-dark col-2 view-height">
+                  { tagButtonList() }
+                </div>
 
-            <div className="container-fluid">
-              <div className="row">
+                <div className="titles-list border border-dark col-4 view-height">
+                  <i class="bi bi-search"></i>
+                  <input className='w-75 search-area' placeholder="Search" onChange={event => setQuery(event.target.value)} />
 
-                  <div className="border border-dark col-2 view-height">
-                    { tagButtonList() }
-                  </div>
+                  {notes
+                   .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
 
-                  <div className="border border-dark col-4 view-height">
-                    {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} />
+                    .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
+                  }
+                </div>
 
-                    {notes
-                     .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
+                <div className="border border-dark col-6 view-height">
 
-                      .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-                    } */}
-                    {noteButtonList()}
-                  </div>
+                  <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
+                    <input className='w-100 border' type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+                    <input className='w-100 border' type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
+                    <textarea className='w-100 border textBox' id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
 
-                  <div className="border border-dark col-6 view-height">
-                    <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
-                      <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-                      <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
-                      <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
-                      <div className='form-group'>
-                        <label htmlFor='file'> Choose post image</label>
-                        <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/>
-                      </div>
-                      <input id='submit' type="submit" value="Add a note" />
-                    </form>
-                    <br/>
-                    {viewNote()}
-                  </div>
+                    <div className="clearfix"></div>
 
-              </div>
+                    <div className='form-group'>
+                      {/* <label htmlFor='file'> Choose post image</label> */}
+                      <input type='file' id='articleImage' name='articleImage' filename='articleImage' className='form-control-file float-start btn btn-primary' onChange={onChangeFile}/>
+                      <div className=""></div>
+                      <input className='float-end btn btn-primary' id='submit' type="submit" value="Add a note" />
+                    </div>
+                  </form>
+
+                  <div className="clearfix"></div>
+
+                  {/* display of note/image in column 3 on right */}
+                  <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display"></div>
+
+                </div>
+
             </div>
           </div>
+        </div>
 
-
-          {/* <div>
-            <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
-              <input type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-              <input type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
-              <textarea id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
-              <div className='form-group'>
-                <label htmlFor='file'> Choose post image</label>
-                <input type='file' id='articleImage' name= 'articleImage' filename='articleImage' className='form-control-file' onChange={onChangeFile}/>
-              </div>
-              <input id='submit' type="submit" value="Add a note" />
-            </form>
-          </div> */}
-
-
-
-          {/* search function */}
-          {/* <input placeholder="Search" onChange={event => setQuery(event.target.value)} /> */}
-
-          {/* notes output */}
-
-          {/* {notes
-            .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
-
-            .map((note) => ( <Note note={ note } key={ note._id } token={ token } userId={userId} title={ note.title } tags={ note.tags } counterChanger={ setCounter }/> ))
-          } */}
-
-          {/* back to top button */}
-          <button onClick= {topFunction} id="myBtn" title="Go to top">Top</button>
-        </>
-      )
-    } else {
-      navigate('/signin')
-    }
+      </>
+    )
+  } else {
+    navigate('/signin')
+  }
 }
 
 export default Feed;
-
