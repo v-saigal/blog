@@ -227,6 +227,7 @@ const Feed = ({ navigate }) => {
 
                 <div className="tags-list border border-dark col-2 view-height">
                   { tagButtonList() }
+                  <button type='button' onClick = {()=> setSelectedNotes(notes)}>Clear selection</button>
                 </div>
                 <div className="titles-list border border-dark col-4 view-height">
                   <i class="bi bi-search"></i>
