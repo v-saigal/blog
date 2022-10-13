@@ -150,7 +150,7 @@ const Feed = ({ navigate }) => {
   const tagButtonList = () =>{
     return (
       <> 
-        <h3 className='text-center text-secondary mt-2'>Tags List</h3>
+        <h4 className='text-left text-secondary mt-2'>Tags</h4>
         <ul className='tags-ul p-0'>
           {tags.map((tag) =>
           <li className='notelist-selector row justify-content-start align-items-center on-hover' tabindex='0' onClick={()=> updateSelectedTag(tag)}><i class="bi bi-tags-fill col-1"></i> <span className='col-3'>{tag.name}</span> <span className='col-7 text-end text-secondary'>{tag.notes.length}</span>  
@@ -228,7 +228,7 @@ const Feed = ({ navigate }) => {
                 <div className="titles-list text-start border border-dark border-top-0 border-bottom-0 col-4 view-height">
                   <div className='mb-3 d-flex align-items-center mt-2'>
                     <i class="bi bi-search fs-5"></i>
-                    <input className='w-75 search-area fs-5 ps-2' placeholder="Search" onChange={updateFilterOptions} />
+                    <input className='w-75 search-area fs-5 ps-2' placeholder="Search notes" onChange={updateFilterOptions} />
                   </div>
 
 
@@ -241,7 +241,7 @@ const Feed = ({ navigate }) => {
                 </div>
 
                 <div className=" col-6 view-height">
-
+                  <h4> New note</h4>
                   <form className="postForm mt-2" onSubmit={handleSubmit} encType='multipart/form-data'>
                     <input className='w-100 border mb-2' type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
                     <input className='w-100 border mb-2' type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
