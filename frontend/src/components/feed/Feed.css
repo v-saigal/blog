@@ -49,7 +49,7 @@
 .notes-display {
     height: 490px;
     margin-top: 20px;
-    overflow-x: auto;
+    overflow: auto;
 }
 
 .col-2, .col-4, .col-6 {

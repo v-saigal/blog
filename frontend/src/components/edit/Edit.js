@@ -1,6 +1,7 @@
 import jwt_decode from "jwt-decode";
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import './Edit.css';
 
 function Edit({navigate}){
     const [token, setToken] = useState(window.localStorage.getItem("token"));
@@ -114,12 +115,19 @@ function Edit({navigate}){
       return (
         <>
             <div>
-            <form className="postForm" onSubmit={handleSubmit}>
-              <input type="text" name="title" value={noteValues.title} onChange={handleNoteChange}/>
-              <textarea id="postarea" name="noteContent" value={ noteValues.noteContent } onChange={handleNoteChange} placeholder="Write your note here"></textarea>
-              <input type="text" name="tags" value={noteValues.tags} onChange={handleNoteChange}/>
+            <form className="postForm container border border-dark rounded d-flex justify-content-center align-items-center" id="post-container" onSubmit={handleSubmit}>
 
-              <input id='submit' type="submit" value="Save a note" />
+              <div className="d-flex flex-column justify-content-center align-items-center w-75 gap-2">
+                <input className="inputSize border row p-1 rounded" type="text" name="title" value={noteValues.title} onChange={handleNoteChange}/>
+                
+                <input className="inputSize border row p-1 rounded" type="text" name="tags" value={noteValues.tags} onChange={handleNoteChange}/>
+                
+                <textarea className="border row p-1 rounded" id="editArea" name="noteContent" value={ noteValues.noteContent } onChange={handleNoteChange} placeholder="Write your note here"></textarea>
+                
+
+                <input className="btn btn-primary rounded w-50" id='submit' type="submit" value="Save a note" />
+              </div>
+
             </form>
       </div>
       </>

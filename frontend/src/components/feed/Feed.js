@@ -178,7 +178,7 @@ const Feed = ({ navigate }) => {
       <div className="container-4">
           <p className='message con-4-1 fs-5'>{ note.title }</p>
       </div>
-      
+
     </div>
     </>
     )}
@@ -202,9 +202,14 @@ const Feed = ({ navigate }) => {
 
 
   }
+  function onClearSelection(){
+    setSelectedNotes(notes)
+    setSelectedNote("")
+
+  }
 
 
-  
+
 
   if(token) {
     return(
@@ -218,7 +223,7 @@ const Feed = ({ navigate }) => {
 
                 <div className="tags-list border-dark col-2 view-height">
                   { tagButtonList() }
-                  <button className="btn btn-primary fs-7" type='button' onClick = {()=> setSelectedNotes(notes)}>Clear selection</button>
+                  <button className="btn btn-primary fs-7" type='button' onClick = {onClearSelection}>Clear selection</button>
                 </div>
                 <div className="titles-list text-start border border-dark border-top-0 border-bottom-0 col-4 view-height">
                   <div className='mb-3 d-flex align-items-center mt-2'>
