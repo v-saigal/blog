@@ -151,7 +151,7 @@ const Feed = ({ navigate }) => {
     return (<ul>
       {tags.map((tag) =>
       <div>
-         <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedTag(tag)}>{tag.name} {tag.notes.length} 
+         <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedTag(tag)}><i class="bi bi-tags-fill"></i> <span>{tag.name}</span> <span>{tag.notes.length}</span>  
          </div>
         </div>
       )}

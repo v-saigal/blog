@@ -18,6 +18,10 @@ const Note = (props) => {
       day: "numeric",
       })
 
+      function refreshPage(){ 
+        window.location.reload();
+      }
+
       const deleteFunction = async (event) => {
         event.preventDefault();
         fetch( '/notes', {
@@ -35,6 +39,7 @@ const Note = (props) => {
               alert('oops something is wrong')
             }
           }).then(() => {props.counterChanger(prevState => ({count: prevState.counter + 1}))})
+          refreshPage()
       }
 
       const deleteBtnAppears = (() => {if (props.note.noteAuthor===props.userId) {return <button onClick= {deleteFunction} className={"like"} id={"deleteBtn"} title={"Delete note"}>Delete</button>}})
