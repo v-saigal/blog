@@ -1,0 +1,12 @@
+#post-container {
+    height: calc(100vh - 97px - 16px);
+}
+
+.inputSize {
+    width: 90%;
+}
+
+#editArea {
+    width: 90%;
+    height: 500px;
+}
