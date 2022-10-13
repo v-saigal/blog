@@ -47,11 +47,24 @@
 }
 
 .notes-display {
-    height: 525px;
+    height: 490px;
     margin-top: 20px;
     overflow-x: auto;
 }
 
 .col-2, .col-4, .col-6 {
     height: calc(100vh - 97px - 16px);
+}
+
+.tags-ul {
+    list-style-type: none;
+}
+
+.fs-7 {
+    font-size: 14px;
+    width: 100%;
+}
+
+.on-hover:hover {
+  cursor: pointer;
 }
