@@ -197,7 +197,7 @@ const Feed = ({ navigate }) => {
 
   const updateFilterOptions = (event) =>{
 
-      setSelectedNotes(notes.filter(note => { return note.title.includes(event.target.value) || note.noteContent.includes(event.target.value) || note.tags.includes(event.target.value)}))
+      setSelectedNotes(notes.filter(note => { return note.title.toLowerCase().includes(event.target.value.toLowerCase()) || note.noteContent.toLowerCase().includes(event.target.value.toLowerCase()) || note.tags.map(n => n.name.toLowerCase()).includes(event.target.value.toLowerCase())}))
 
 
 
