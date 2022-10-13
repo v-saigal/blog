@@ -189,7 +189,7 @@ const Feed = ({ navigate }) => {
   }
 
 
-  }
+  
 
   if(token) {
     return(
@@ -236,7 +236,7 @@ const Feed = ({ navigate }) => {
                   <div className="clearfix"></div>
 
                   {/* display of note/image in column 3 on right */}
-                  <div className="notes-display border border-dark h-50" id='notes-display' name="notes-display">
+                  <div className="notes-display mh-100" id='notes-display' name="notes-display">
                     {viewNote()}
                   </div>
 

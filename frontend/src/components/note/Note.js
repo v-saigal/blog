@@ -88,9 +88,17 @@ return(
             { props.note.tags.map(
               (tag) => (tag.name)).join(', ')}</p>
        </div>
+       
+       <div className='row d-flex mw-100 p-0 m-0'>
+        <div className='col p-0'>
+         {deleteBtnAppears()}
+        </div>
 
-       {deleteBtnAppears()}
-       {editLinkAppears()}
+        <div className='col p-0 m-0 edit-btn text-end'>
+          {editLinkAppears()} 
+        </div>      
+       </div>
+
 
       </article>
       </>
