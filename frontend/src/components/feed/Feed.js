@@ -151,7 +151,7 @@ const Feed = ({ navigate }) => {
     return (<ul>
       {tags.map((tag) =>
       <div>
-         <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedTag(tag)}><i class="bi bi-tags-fill"></i> <span>{tag.name}</span> <span>{tag.notes.length}</span>  
+         <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedTag(tag)}><i class="bi bi-tags-fill"></i> <span>{tag.name}</span> <span>{tag.notes.length}</span>
          </div>
         </div>
       )}
@@ -167,15 +167,15 @@ const Feed = ({ navigate }) => {
     {selectedNotes.map((note) =>
     <>
     <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedNote(note)}>
-   
+
       <div className="con-1-2">
-    
+
             <h6 className="post-date">{ new Date(note.datePosted).toLocaleDateString("en-uk")}</h6>
       </div>
       <div className="container-4">
           <p className='message con-4-1'>{ note.title }</p>
       </div>
-      
+
     </div>
     </>
     )}
@@ -201,9 +201,14 @@ const Feed = ({ navigate }) => {
 
 
   }
+  function onClearSelection(){
+    setSelectedNotes(notes)
+    setSelectedNote("")
+
+  }
 
 
-  
+
 
   if(token) {
     return(
@@ -217,7 +222,7 @@ const Feed = ({ navigate }) => {
 
                 <div className="tags-list border border-dark col-2 view-height">
                   { tagButtonList() }
-                  <button type='button' onClick = {()=> setSelectedNotes(notes)}>Clear selection</button>
+                  <button type='button' onClick = {onClearSelection}>Clear selection</button>
                 </div>
                 <div className="titles-list border border-dark col-4 view-height">
                   <i class="bi bi-search"></i>
