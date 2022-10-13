@@ -42,13 +42,13 @@ const Note = (props) => {
           refreshPage()
       }
 
-      const deleteBtnAppears = (() => {if (props.note.noteAuthor===props.userId) {return <button onClick= {deleteFunction} className={"like"} id={"deleteBtn"} title={"Delete note"}>Delete</button>}})
+      const deleteBtnAppears = (() => {if (props.note.noteAuthor===props.userId) {return <button onClick= {deleteFunction} className={"like btn btn-danger"} id={"deleteBtn"} title={"Delete note"}>Delete</button>}})
       
       const editLinkAppears = (() => {
         if (props.note.noteAuthor===props.userId){
           return ( 
           <form action={`/notes/edit/${props.note._id}`}>
-          <input type='submit' value = 'Edit' /> 
+          <input className="btn btn-secondary" type='submit' value = 'Edit' /> 
           </form>)
         }
       })
@@ -62,20 +62,10 @@ const Note = (props) => {
       })
 return(
   <>
-
       <article data-cy="note" className='note' key={ props.note._id }>
+        <h4 className='message con-4-1'>{ props.note.title }</h4>
+        <p className="post-date text-end fs-7">{ date }</p>
 
-      {/* <div className="container-2">
-         <h2 className="post-author con-2-1">{ props.note.noteAuthor }</h2>
-      </div> */}
-
-        <div className="con-1-2">
-            <h6 className="post-date">{ date }</h6>
-      </div>
-
-        <div className="container-4">
-          <p className='message con-4-1'>{ props.note.title }</p>
-       </div>
 
        <div className="container-4">
 
@@ -84,26 +74,24 @@ return(
 
        <div className="container-4">
           <p className='message con-4-1'>{ props.note.noteContent }</p>
-       </div>
 
-        <div className="container-4">
-          <h6>tags:</h6>
-          {/* <p className='message con-4-1'>{ props.note.tags }</p> */}
-          <p className='message con-4-1'>
-            { props.note.tags.map(
-              (tag) => (tag.name)).join(', ')}</p>
-       </div>
-       
-       <div className='row d-flex mw-100 p-0 m-0'>
-        <div className='col p-0'>
-         {deleteBtnAppears()}
-        </div>
+          <div className="container-4">
+            <p className='message con-4-1 text-secondary'>
+              { props.note.tags.map(
+                (tag) => (tag.name)).join(', ')}
+            </p>
 
-        <div className='col p-0 m-0 edit-btn text-end'>
-          {editLinkAppears()} 
-        </div>      
-       </div>
+            <div className='row d-flex mw-100 p-0 m-0'>
+              <div className='col p-0'>
+              {deleteBtnAppears()}
+              </div>
 
+              <div className='col p-0 m-0 edit-btn text-end'>
+                {editLinkAppears()} 
+              </div>      
+            </div>
+          </div>
+       </div>
 
       </article>
       </>

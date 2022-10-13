@@ -148,14 +148,17 @@ const Feed = ({ navigate }) => {
     setSelectedNote(value)
   }
   const tagButtonList = () =>{
-    return (<ul>
-      {tags.map((tag) =>
-      <div>
-         <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedTag(tag)}><i class="bi bi-tags-fill"></i> <span>{tag.name}</span> <span>{tag.notes.length}</span>
-         </div>
-        </div>
-      )}
-    </ul>)
+    return (
+      <> 
+        <h3 className='text-center text-secondary mt-2'>Tags List</h3>
+        <ul className='tags-ul p-0'>
+          {tags.map((tag) =>
+          <li className='notelist-selector row justify-content-start align-items-center on-hover' tabindex='0' onClick={()=> updateSelectedTag(tag)}><i class="bi bi-tags-fill col-1"></i> <span className='col-3'>{tag.name}</span> <span className='col-7 text-end text-secondary'>{tag.notes.length}</span>  
+          </li>
+          )}
+        </ul>
+      </>
+)
   }
 
 
@@ -163,17 +166,17 @@ const Feed = ({ navigate }) => {
   function noteButtonList(){
 
   if(selectedNotes !=="")
-  {return (<ul>
+  {return (<ul className='p-0'>
     {selectedNotes.map((note) =>
     <>
-    <div className='notelist-selector' tabindex='0' onClick={()=> updateSelectedNote(note)}>
-
+    <div className='notelist-selector on-hover mb-1' tabindex='0' onClick={()=> updateSelectedNote(note)}>
+   
       <div className="con-1-2">
-
-            <h6 className="post-date">{ new Date(note.datePosted).toLocaleDateString("en-uk")}</h6>
+    
+            <h6 className="post-date fs-7">{ new Date(note.datePosted).toLocaleDateString("en-uk")}</h6>
       </div>
       <div className="container-4">
-          <p className='message con-4-1'>{ note.title }</p>
+          <p className='message con-4-1 fs-5'>{ note.title }</p>
       </div>
 
     </div>
@@ -186,9 +189,7 @@ const Feed = ({ navigate }) => {
     if (selectedNote != ""){
       return (
         <div>
-
             <Note note={ selectedNote } key={ selectedNote._id } token={ token } userId={userId} title={ selectedNote.title } tags={ selectedNote.tags } counterChanger={ setCounter }/>
-
         </div>
       )
     }
@@ -217,16 +218,19 @@ const Feed = ({ navigate }) => {
 
           {/* <i class="bi bi-brightness-high-fill dark-toggle"></i> */}
 
-          <div className="container">
+          <div className="container border border-secondary border-2 rounded">
             <div className="row">
 
-                <div className="tags-list border border-dark col-2 view-height">
+                <div className="tags-list border-dark col-2 view-height">
                   { tagButtonList() }
-                  <button type='button' onClick = {onClearSelection}>Clear selection</button>
+                  <button className="btn btn-primary fs-7" type='button' onClick = {onClearSelection}>Clear selection</button>
                 </div>
-                <div className="titles-list border border-dark col-4 view-height">
-                  <i class="bi bi-search"></i>
-                  <input className='w-75 search-area' placeholder="Search" onChange={updateFilterOptions} />
+                <div className="titles-list text-start border border-dark border-top-0 border-bottom-0 col-4 view-height">
+                  <div className='mb-3 d-flex align-items-center mt-2'>
+                    <i class="bi bi-search fs-5"></i>
+                    <input className='w-75 search-area fs-5 ps-2' placeholder="Search" onChange={updateFilterOptions} />
+                  </div>
+
 
                   {/* {notes
                    .filter(note => { return note.title.includes(query) || note.noteContent.includes(query) || note.tags.includes(query)})
@@ -236,11 +240,11 @@ const Feed = ({ navigate }) => {
                   { noteButtonList() }
                 </div>
 
-                <div className="border border-dark col-6 view-height">
+                <div className=" col-6 view-height">
 
-                  <form className="postForm" onSubmit={handleSubmit} encType='multipart/form-data'>
-                    <input className='w-100 border' type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
-                    <input className='w-100 border' type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
+                  <form className="postForm mt-2" onSubmit={handleSubmit} encType='multipart/form-data'>
+                    <input className='w-100 border mb-2' type="text" name="title" onChange={handleNoteChange} value={ noteValues.title }placeholder="Enter a title" required/>
+                    <input className='w-100 border mb-2' type="text" name="tags" onChange={handleNoteChange} value={ noteValues.tags }placeholder="Enter tags e.g. tag1, tag2, tag3" />
                     <textarea className='w-100 border textBox' id="postarea" name="noteContent" onChange={handleNoteChange} value={ noteValues.noteContent } placeholder="Write your note here"></textarea>
 
                     <div className="clearfix"></div>
