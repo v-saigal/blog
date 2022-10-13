@@ -30,7 +30,7 @@ export default function Navbar() {
               </a>
         
               <ul className="nav nav-pills">
-                <li className="nav-item"><a href="notes" className="nav-link active" aria-current="page">Home</a></li>
+                <li className="nav-item"><a href="/notes" className="nav-link active" aria-current="page">Home</a></li>
                 <li className="nav-item"><a href="/login" onClick={logout} className="nav-link">Logout</a></li>
               </ul>
             </header>
